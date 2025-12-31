@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light" data-direction="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found | GrowwPortfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Clean CSS Variables */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #0ea5e9;
+            --border-color: #e2e8f0;
+            --direction: ltr;
+        }
+
+        html[data-theme='dark'] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent-primary: #60a5fa;
+            --accent-secondary: #38bdf8;
+            --border-color: #334155;
+        }
+
+        /* RTL/LTR Direction Variables */
+        [dir="rtl"] {
+            --direction: rtl;
+        }
+
+        [dir="ltr"] {
+            --direction: ltr;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            min-height: 100vh;
+            line-height: 1.6;
+            direction: var(--direction);
+            overflow-x: hidden;
+        }
+
+        /* Layout Fixes */
+        body, html {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navigation fixes */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: var(--bg-primary);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        [dir="rtl"] nav {
+            left: auto;
+            right: 0;
+        }                                                                                           
+         /* Main content area */
+        main {
+            margin-top: 80px; /* Account for fixed nav */
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 160px); /* Account for nav and footer */
+        }
+
+        /* Footer fixes */
+        footer {
+            position: relative;
+            margin-top: auto;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Container alignment */
+        .container-fixed {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            width: 100%;
+        }
+
+        /* Text alignment utilities */
+        .text-start {
+            text-align: left;
+        }
+        
+        .text-end {
+            text-align: right;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+
+        /* Float utilities */
+        .float-start {
+            float: left;
+        }
+        
+        .float-end {
+            float: right;
+        }
+
+        /* Flex alignment utilities */
+        .justify-start {
+            justify-content: flex-start;
+        }
+        
+        .justify-end {
+            justify-content: flex-end;
+        }
+        
+        .justify-center {
+            justify-content: center;
+        }
+
+        .items-start {
+            align-items: flex-start;
+        }
+        
+        .items-end {
+            align-items: flex-end;
+        }
+        
+        .items-center {
+            align-items: center;
+        }
+
+        /* Grid alignment */
+        .grid-center {
+            display: grid;
+            place-items: center;
+        }
+
+        /* Button fixes */
+        .btn-minimal {
+            padding: 0.75rem 1.75rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background-color: var(--accent-primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
+        }
+        .btn-outline {
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            background: transparent;
+        }
+        .btn-outline:hover {
+            border-color: var(--accent-primary);
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+        /* Typography */
+        .text-display {
+            font-size: clamp(5rem, 15vw, 8rem);
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            margin: 0;
+        }
+        .text-heading {
+            font-size: clamp(1.75rem, 5vw, 2.5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            margin: 0 0 1rem 0;
+        }
+/* Brand accent colors */
+.header-accent {
+    color: var(--text-primary); /* Groww */
+}
+.text-accent {
+    color: var(--accent-primary); /* Portfolio */
+}
+
+        /* 404 Number Styling */
+        .error-404 {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            opacity: 0.9;
+        }
+
+        /* Quick links grid */
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Search box */
+        .search-box {
+            max-width: 400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Animation */
+        @keyframes subtle-float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .float-subtle {
+            animation: subtle-float 8s ease-in-out infinite;
+        }
+
+        /* RTL Specific Adjustments */
+        [dir="rtl"] .fa-arrow-left::before {
+            content: "\f061";
+        }
+
+        [dir="rtl"] .icon-flip {
+            transform: scaleX(-1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 640px) {
+            nav {
+                padding: 0.5rem 0;
+            }
+            
+            main {
+                margin-top: 70px;
+                min-height: calc(100vh - 140px);
+                padding: 1rem;
+            }
+            
+            .text-display {
+                font-size: clamp(4rem, 20vw, 6rem);
+            }
+            
+            .text-heading {
+                font-size: clamp(1.5rem, 6vw, 2rem);
+            }
+            
+            .btn-minimal {
+                padding: 0.625rem 1.5rem;
+                font-size: 0.9rem;
+                width: 100%;
+            }
+            
+            .quick-links {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+        }
+
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .text-display {
+                font-size: clamp(5rem, 12vw, 7rem);
+            }
+            
+            .quick-links {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Accessibility */
+        .focus-visible {
+            outline: 2px solid var(--accent-primary);
+            outline-offset: 2px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Navigation -->
+    <nav>
+        <div class="container-fixed">
+            <div class="flex items-center justify-between py-4">
+                <a href="index.html" class="text-2xl sm:text-3xl font-serif font-extrabold tracking-wide">
+                <!-- <span class="header-accent">Groww</span><span class="text-accent">Portfolio</span> -->
+            </a>
+                
+                <div class="flex items-center gap-4">
+                    <!-- Direction Toggle -->
+                    <button id="direction-toggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" 
+                            aria-label="Toggle text direction">
+                        <i class="fas fa-exchange-alt text-gray-600 dark:text-gray-400"></i>
+                    </button>
+                    
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                            aria-label="Toggle theme">
+                        <i class="fas fa-moon text-gray-600 dark:text-gray-400"></i>
+                    </button>
+                    
+                    <!-- Back to Home -->
+                    <a href="index.html" class="text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-colors hidden sm:inline">
+                        Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container-fixed">
+            <div class="text-center max-w-3xl mx-auto">
+                <!-- 404 Number -->
+                <div class="mb-8">
+                    <h1 class="text-display error-404 mb-4">
+                        404
+                    </h1>
+                    <div class="h-1 w-20 bg-gradient-to-r from-blue-500 to-cyan-400 mx-auto rounded-full"></div>
+                </div>
+
+                <!-- Message -->
+                <div class="mb-12">
+                    <h2 class="text-heading text-gray-800 dark:text-gray-200">
+                        Page Not Found
+                    </h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed mb-6">
+                        The page you're looking for might have been moved, deleted, or never existed.
+                    </p>
+                </div>
+
+                <!-- Illustration -->
+                <div class="mb-12 px-4">
+                    <div class="float-subtle inline-block">
+                        <svg width="240" height="180" viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="120" cy="90" r="70" stroke="url(#paint0_linear)" stroke-width="2" stroke-dasharray="6 6"/>
+                            <path d="M120 40L120 140" stroke="url(#paint1_linear)" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M70 90L170 90" stroke="url(#paint1_linear)" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="120" cy="90" r="10" fill="url(#paint2_linear)"/>
+                            <defs>
+                                <linearGradient id="paint0_linear" x1="50" y1="90" x2="190" y2="90" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#3B82F6"/>
+                                    <stop offset="1" stop-color="#0EA5E9"/>
+                                </linearGradient>
+                                <linearGradient id="paint1_linear" x1="120" y1="40" x2="120" y2="140" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#3B82F6"/>
+                                    <stop offset="1" stop-color="#0EA5E9"/>
+                                </linearGradient>
+                                <linearGradient id="paint2_linear" x1="110" y1="90" x2="130" y2="90" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#3B82F6"/>
+                                    <stop offset="1" stop-color="#0EA5E9"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12 action-buttons">
+                    <a href="index.html" class="btn-minimal btn-primary">
+                        <i class="fas fa-arrow-left icon-flip"></i>
+                        <span>Return Home</span>
+                    </a>
+                    <a href="contact.html" class="btn-minimal btn-outline">
+                        <i class="fas fa-life-ring"></i>
+                        <span>Get Help</span>
+                    </a>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="mb-12">
+                    <p class="text-sm text-gray-500 dark:text-gray-500 mb-4">Or navigate to:</p>
+                    <div class="quick-links">
+                        <a href="project-page.html" class="px-5 py-3 rounded-lg border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-800 transition-colors text-sm font-medium flex items-center justify-center gap-2">
+                            <i class="fas fa-code text-blue-500"></i>
+                            <span>Projects</span>
+                        </a>
+                        <a href="articles.html" class="px-5 py-3 rounded-lg border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-800 transition-colors text-sm font-medium flex items-center justify-center gap-2">
+                            <i class="fas fa-newspaper text-blue-500"></i>
+                            <span>Articles</span>
+                        </a>
+                        <a href="about.html" class="px-5 py-3 rounded-lg border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-800 transition-colors text-sm font-medium flex items-center justify-center gap-2">
+                            <i class="fas fa-user text-blue-500"></i>
+                            <span>About</span>
+                        </a>
+                        <a href="contact.html" class="px-5 py-3 rounded-lg border border-gray-200 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-800 transition-colors text-sm font-medium flex items-center justify-center gap-2">
+                            <i class="fas fa-envelope text-blue-500"></i>
+                            <span>Contact</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Search -->
+                <div class="search-box">
+                    <div class="relative">
+                        <input type="text" placeholder="Search the site..." 
+                               class="w-full px-5 py-3 pr-12 rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base">
+                        <button type="button" 
+                                class="absolute end-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-blue-500 transition-colors"
+                                aria-label="Search">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container-fixed py-6">
+            <div class="text-center">
+                <p class="text-sm text-gray-500 dark:text-gray-500">
+                    © 2024 GrowwPortfolio. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const html = document.documentElement;
+            const themeToggle = document.getElementById('theme-toggle');
+            const directionToggle = document.getElementById('direction-toggle');
+            
+            // Theme Management
+            const initializeTheme = () => {
+                const storedTheme = localStorage.getItem('theme');
+                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const initialTheme = storedTheme || (systemPrefersDark ? 'dark' : 'light');
+                html.setAttribute('data-theme', initialTheme);
+                updateThemeIcon(initialTheme);
+            };
+            
+            const toggleTheme = () => {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                localStorage.setItem('theme', newTheme);
+                html.setAttribute('data-theme', newTheme);
+                updateThemeIcon(newTheme);
+            };
+            
+            const updateThemeIcon = (theme) => {
+                if (themeToggle) {
+                    const icon = themeToggle.querySelector('i');
+                    icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                }
+            };
+            
+            // Direction Management
+            const initializeDirection = () => {
+                const storedDirection = localStorage.getItem('direction');
+                const initialDirection = storedDirection || 'ltr';
+                html.setAttribute('data-direction', initialDirection);
+                html.setAttribute('dir', initialDirection);
+            };
+            
+            const toggleDirection = () => {
+                const currentDirection = html.getAttribute('data-direction');
+                const newDirection = currentDirection === 'ltr' ? 'rtl' : 'ltr';
+                localStorage.setItem('direction', newDirection);
+                html.setAttribute('data-direction', newDirection);
+                html.setAttribute('dir', newDirection);
+            };
+            
+            // Event Listeners
+            themeToggle?.addEventListener('click', toggleTheme);
+            directionToggle?.addEventListener('click', toggleDirection);
+            
+            // Initialize
+            initializeTheme();
+            initializeDirection();
+            
+            // Search Functionality
+            const searchInput = document.querySelector('input[type="text"]');
+            const searchButton = document.querySelector('.search-box button');
+            
+            const performSearch = () => {
+                const query = searchInput?.value.trim();
+                if (query) {
+                    // Redirect to search page or implement search logic
+                    window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+                }
+            };
+            
+            searchButton?.addEventListener('click', performSearch);
+            searchInput?.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') performSearch();
+            });
+            
+            // Mobile menu toggle for navigation
+            const setupMobileMenu = () => {
+                if (window.innerWidth < 640) {
+                    // Add mobile menu if needed
+                }
+            };
+            
+            setupMobileMenu();
+            window.addEventListener('resize', setupMobileMenu);
+            
+            // Focus management for accessibility
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Tab') {
+                    document.body.classList.add('user-tabbing');
+                }
+            });
+            
+            document.addEventListener('mousedown', () => {
+                document.body.classList.remove('user-tabbing');
+            });
+            
+            // Add loading animation
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.3s ease';
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

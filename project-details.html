@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./assets/growwpark_logo.jpg" type="image/jpeg">
+<title>Growwpark Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- CSS Variables for Dynamic Colors --- */
+        :root, html[data-theme='light'] {
+            --color-background: #F3F4F6;
+            --color-primary-text: #1E293B;
+            --color-secondary-text: #475569;
+            --color-accent: #3B82F6;
+            --color-primary: #1E3A8A;
+            --color-secondary: #0EA5E9;
+            --color-border: #E2E8F0;
+            --color-hover: #E0F2FE;
+            --color-footer-bg: #1E293B;
+            --color-footer-text: #F1F5F9;
+            --color-card-bg: #FFFFFF;
+            --color-success: #10B981;
+        }
+        html[data-theme='dark'] {
+            --color-background: #0F172A;
+            --color-primary-text: #F8FAFC;
+            --color-secondary-text: #CBD5E1;
+            --color-accent: #3B82F6;
+            --color-primary: #60A5FA;
+            --color-secondary: #38BDF8;
+            --color-border: #334155;
+            --color-hover: #1E293B;
+            --color-footer-bg: #020617;
+            --color-footer-text: #E2E8F0;
+            --color-card-bg: #1E293B;
+            --color-success: #34D399;
+        }
+        
+        body {
+            background-color: var(--color-background);
+            color: var(--color-primary-text);
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        /* Utility Classes */
+        .text-primary-text { color: var(--color-primary-text); }
+        .text-secondary-text { color: var(--color-secondary-text); }
+        .text-accent { color: var(--color-accent); }
+        .text-primary { color: var(--color-primary); }
+        .text-secondary { color: var(--color-secondary); }
+        .bg-background { background-color: var(--color-background); }
+        .bg-hover { background-color: var(--color-hover); }
+        .border-border { border-color: var(--color-border); }
+        
+        /* Header Accent Color */
+        .header-accent {
+            color: var(--color-primary);
+        }
+        #main-header nav {
+            background: var(--color-card-bg);
+            border-radius: 9999px;
+            padding: 10px 25px;
+            margin: 15px auto;
+            max-width: 1200px;
+            box-shadow: 0 10px 25px rgba(30, 58, 138, 0.15);
+        }
+
+        .btn-accent {
+    background-color: var(--color-accent); /* Blue */
+    color: #ffffff;
+    border: none;
+}
+
+.btn-accent:hover {
+    background-color: #2563EB; /* Slightly darker blue on hover */
+}
+
+    
+        /* Footer Specific Overrides */
+        #main-footer {
+            background-color: var(--color-footer-bg);
+            color: var(--color-footer-text);
+        }
+        #main-footer .footer-heading {
+            color: var(--color-footer-text);
+        }
+        #main-footer .footer-link {
+    color: #ffffff;           /* WHITE */
+            transition: color 0.2s;
+        }
+        #main-footer .footer-link:hover {
+            color: var(--color-accent);
+        }
+
+        /* Nav Link Underline Animation */
+        .nav-link {
+            position: relative;
+            transition: color 0.3s;
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 2px;
+            background-color: var(--color-accent);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            transform: scaleX(1);
+        }
+
+        /* IMPROVED DROPDOWN WITH BUFFER ZONE */
+        .dropdown-wrapper {
+            position: relative;
+        }
+
+        .dropdown-wrapper::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 20px;
+            bottom: 100%;
+            z-index: 100;
+            background: transparent;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 0;
+            background-color: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px rgba(30, 58, 138, 0.15);
+            min-width: 200px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-wrapper:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            display: block;
+        }
+        
+        .dropdown-menu:hover {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            display: block;
+        }
+        
+        .dropdown-menu a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--color-primary-text);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        .dropdown-menu a:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-menu a:hover {
+            background-color: var(--color-hover);
+            color: var(--color-accent);
+            padding-left: 1.25rem;
+        }
+
+        /* ============================================= */
+        /* PROJECT DETAILS SPECIFIC STYLES */
+        /* ============================================= */
+
+        /* Project Header */
+        .project-header-section {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-background) 100%);
+            border-radius: 2rem;
+            padding: 5rem 2rem;
+            margin: 2rem 0 3rem 0;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+        }
+        
+        .project-header-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 90% 10%, rgba(59, 130, 246, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 10% 90%, rgba(14, 165, 233, 0.1) 0%, transparent 40%);
+        }
+
+        /* Project Meta */
+        /* Project Meta */
+.project-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+
+    background: rgba(255, 255, 255, 0.1);
+
+    /* ✅ Safari & iOS support */
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+
+        /* Project Gallery */
+        .project-gallery {
+    column-count: 2;     /* or 3 if you want more columns */
+    column-gap: 1.5rem;
+}
+        
+        .gallery-item-1 {
+            grid-column: 1 / span 8;
+            grid-row: 1 / span 4;
+        }
+        
+        .gallery-item-2 {
+            grid-column: 9 / span 4;
+            grid-row: 1 / span 2;
+        }
+        
+        .gallery-item-3 {
+            grid-column: 9 / span 4;
+            grid-row: 3 / span 2;
+        }
+        
+        .gallery-item-4 {
+            grid-column: 1 / span 6;
+            grid-row: 5 / span 2;
+        }
+        
+        .gallery-item-5 {
+            grid-column: 7 / span 6;
+            grid-row: 5 / span 2;
+        }
+        
+     .gallery-image {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    border-radius: 1.5rem;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+
+}
+.gallery-image:hover {
+    transform: scale(1.05);        /* zoom-in */
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+}
+.gallery-image:hover {
+    transform: scale(1.05) translateY(-5px);
+}
+.project-gallery img {
+    height: 250px; /* choose any fixed height */
+}
+        
+        .gallery-image:hover {
+            transform: scale(1.02) rotate(1deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Project Content Typography */
+        .project-content h2 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-top: 4rem;
+            margin-bottom: 1.5rem;
+            color: var(--color-primary);
+            font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+            line-height: 1.2;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        .project-content h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-accent), var(--color-secondary));
+            border-radius: 2px;
+        }
+        
+        .project-content h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            color: var(--color-primary-text);
+        }
+        
+        .project-content p {
+            margin-bottom: 2rem;
+            line-height: 1.9;
+            color: var(--color-secondary-text);
+            font-size: 1.125rem;
+        }
+        
+        .project-content ul, .project-content ol {
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+        }
+        
+        .project-content li {
+            margin-bottom: 1rem;
+            line-height: 1.8;
+            color: var(--color-secondary-text);
+            position: relative;
+        }
+        
+        .project-content ul li::before {
+            content: '▸';
+            color: var(--color-accent);
+            font-weight: bold;
+            position: absolute;
+            left: -1.5rem;
+        }
+        
+        .project-content blockquote {
+            border-left: 5px solid var(--color-accent);
+            padding-left: 3rem;
+            margin: 3rem 0;
+            font-style: italic;
+            font-size: 1.5rem;
+            line-height: 1.6;
+            color: var(--color-primary);
+            background: linear-gradient(135deg, var(--color-hover) 0%, transparent 100%);
+            padding: 3rem;
+            border-radius: 1.5rem;
+            border-left-color: transparent;
+            position: relative;
+        }
+        
+        .project-content blockquote::before {
+            content: '"';
+            position: absolute;
+            top: -1rem;
+            left: 2rem;
+            font-size: 8rem;
+            color: var(--color-accent);
+            opacity: 0.2;
+            font-family: Georgia, serif;
+        }
+
+        /* Technology Stack */
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .tech-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: linear-gradient(135deg, var(--color-card-bg) 0%, var(--color-hover) 100%);
+            border: 2px solid var(--color-border);
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .tech-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--color-accent);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.15);
+        }
+        
+        .tech-icon {
+            font-size: 1.5rem;
+            color: var(--color-accent);
+        }
+
+        /* Challenge Solution Cards */
+        .challenge-card {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .challenge-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--color-accent), var(--color-secondary));
+        }
+        
+        .challenge-badge {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--color-success), var(--color-secondary));
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .icon-btn {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.icon-btn:hover {
+    color: var(--color-accent);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+}
+
+        /* Results Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, var(--color-card-bg) 0%, var(--color-hover) 100%);
+            border: 1px solid var(--color-border);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--color-accent);
+        }
+        
+        .metric-icon {
+            font-size: 2.5rem;
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+        }
+        
+        .metric-value {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--color-primary), var(--color-accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-label {
+            color: var(--color-secondary-text);
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 2rem;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--color-accent), var(--color-secondary));
+            border-radius: 2px;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: 1.5rem;
+            top: 0;
+            width: 1.5rem;
+            height: 1.5rem;
+            background: var(--color-accent);
+            border: 4px solid var(--color-background);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        /* Sidebar Styles */
+        .project-sidebar-card {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .project-sidebar-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Client Testimonial */
+        .testimonial-card {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+            border-radius: 1.5rem;
+            padding: 3rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .testimonial-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        /* ============================================= */
+/* Testimonial Card */
+/* ============================================= */
+
+.testimonial-card {
+    background: linear-gradient(
+        135deg,
+        var(--color-primary),
+        var(--color-accent)
+    );
+    border-radius: 1.5rem;
+    padding: 3rem;
+    color: #ffffff;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Decorative background circle */
+.testimonial-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+/* Fade-in animation */
+.fade-in {
+    animation: fadeIn 0.6s ease forwards;
+}
+
+/* Animation delay utilities (NO inline styles) */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+
+
+        /* ============================================= */
+/* Challenge / Solution Badges */
+/* ============================================= */
+
+.challenge-badge {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    color: #ffffff;
+    padding: 0.5rem 1.5rem;
+    border-radius: 2rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Solution badge gradient */
+.challenge-badge-solution {
+    background: linear-gradient(
+        135deg,
+        var(--color-accent),
+        var(--color-secondary)
+    );
+}
+
+/* Challenge badge gradient (for consistency) */
+.challenge-badge-challenge {
+    background: linear-gradient(
+        135deg,
+        #f97316,
+        #ef4444
+    );
+}
+/* Fade-in animation */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Delay utilities (no inline styles) */
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+.delay-3 { animation-delay: 0.6s; }
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+        /* Related Projects */
+        .related-project-card {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 1.5rem;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 100%;
+        }
+        
+        .related-project-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: var(--color-accent);
+        }
+
+        /* Not Found */
+        .project-not-found {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+            border-radius: 2rem;
+            padding: 6rem 2rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        /* Fade-in animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+        /* Animation delay utilities (replace inline styles) */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+
+
+        /* Scroll reveal */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .reveal-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .project-gallery {
+                grid-template-rows: repeat(6, 150px);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .project-header-section {
+                padding: 3rem 1.5rem;
+            }
+            
+            .project-gallery {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(5, 250px);
+                gap: 1rem;
+            }
+            
+            .gallery-item-1,
+            .gallery-item-2,
+            .gallery-item-3,
+            .gallery-item-4,
+            .gallery-item-5 {
+                grid-column: 1;
+                grid-row: auto;
+            }
+            
+            .project-content h2 {
+                font-size: 1.75rem;
+            }
+            
+            .project-content h3 {
+                font-size: 1.5rem;
+            }
+            
+            .timeline::before {
+                left: 1.5rem;
+            }
+            
+            .timeline-item {
+                padding-left: 4rem;
+            }
+            
+            .timeline-dot {
+                left: 1rem;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tech-stack {
+                gap: 0.5rem;
+            }
+            
+            .tech-item {
+                padding: 0.75rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Header (Same as project page) -->
+    <header class="fixed top-0 left-0 w-full z-50 transition-colors duration-300" id="main-header">
+        <nav class="mx-auto max-w-[1200px] px-4 sm:px-3 lg:px-4 py-3 flex 
+        items-center justify-between h-16 bg-white rounded-full shadow-xl border border-border">
+
+                <a href="index.html" class="text-2xl sm:text-3xl font-serif font-extrabold tracking-wide">
+    <span class="header-accent">Groww</span><span class="text-accent">Portfolio</span>
+</a>
+
+
+                <div class="hidden lg:flex items-center space-x-6">
+                    <div class="flex space-x-6 rtl:space-x-reverse rtl:ml-6 text-primary-text font-medium">
+                        
+                        <div class="dropdown-wrapper">
+                            <button class="nav-link flex items-center text-primary-text">
+                                Home
+                                <svg class="w-3 h-3 ml-1 relative top-[2.5px] transition-transform duration-200 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            
+                            <div class="dropdown-menu fade-in-down">
+                                <a href="index.html" class="flex items-center gap-2 px-4 py-3 hover:bg-hover text-sm text-primary-text transition duration-150">
+                                    <i class="fa-solid fa-house text-accent"></i>
+                                    Home 1
+                                </a>
+
+                                <a href="home2.html" class="flex items-center gap-2 px-4 py-3 hover:bg-hover text-sm text-primary-text transition duration-150">
+                                    <i class="fa-solid fa-house text-accent"></i>
+                                    Home 2
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <a href="project-page.html" class="nav-link active">Project</a>
+                        <a href="articles.html" class="nav-link">Articles</a>
+                        <a href="about.html" class="nav-link">About</a>
+                        <a href="contact.html" class="nav-link">Contact</a>
+                        
+                        <!-- <div class="dropdown-wrapper">
+                            <button class="nav-link flex items-center text-primary-text">
+                                Dashboard
+                                <svg class="w-3 h-3 ml-1 relative top-[2.5px] transition-transform duration-200 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+
+                            <div class="dropdown-menu fade-in-down">
+                                <a href="userdash.html" class="block px-4 py-3 hover:bg-hover text-sm text-primary-text transition duration-150">
+                                    User Dashboard
+                                </a>
+                                <a href="dashboard.html" class="block px-4 py-3 hover:bg-hover text-sm text-primary-text transition duration-150">
+                                    Admin Dashboard
+                                </a>
+                            </div>
+                        </div> -->
+
+                    </div>
+                    <div class="w-px h-6 bg-border mx-3"></div>
+                    
+                                    <div class="flex items-center space-x-4 rtl:space-x-reverse rtl:mr-4">
+<!-- 🔽 RESUME DOWNLOAD (DESKTOP FIX) -->
+    <a href="assets/Resume.pdf"
+       download="Alex_Morgan_Resume.pdf"
+       class="icon-btn text-primary hover:text-accent p-1.5 rounded-full transition duration-200 glow-on-hover"
+       title="Download Resume"
+       aria-label="Download Resume">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+    </a>                        <button id="search-open" class="icon-btn text-primary hover:text-accent p-1.5 rounded-full transition duration-200 glow-on-hover" aria-label="Open Search" title="Open Search">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </button>
+                        
+                        <button id="theme-toggle" class="icon-btn text-primary hover:text-accent p-1.5 rounded-full transition duration-200 glow-on-hover" aria-label="Toggle Theme" title="Toggle Theme">
+                            <svg class="w-6 h-6 light-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                            <svg class="w-6 h-6 dark-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                        </button>
+                        <button id="lang-icon" 
+                            class="text-primary hover:text-accent p-1.5 rounded-full transition duration-200 glow-on-hover"
+                            title="Change Language"
+                            aria-label="Change Language"
+                        >
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                    d="M12 3a9 9 0 100 18 9 9 0 000-18zm0 0c2.5 2.8 2.5 12.2 0 15m0-15c-2.5 2.8-2.5 12.2 0 15M3 12h18" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center lg:hidden space-x-4 rtl:space-x-reverse rtl:ml-4">
+                    <!-- <button id="mobile-search-open" class="icon-btn text-primary hover:text-accent p-1.5 rounded-full transition duration-200" aria-label="Open Search" title="Open Search">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </button> -->
+
+                    <button id="mobile-theme-toggle" class="text-primary hover:text-accent p-1.5 rounded-full transition duration-200" aria-label="Toggle Theme" title="Toggle Theme">
+                        <svg class="w-6 h-6 light-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+
+                        <svg class="w-6 h-6 dark-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    
+                    <button id="mobile-menu-open" class="icon-btn text-primary hover:text-accent p-1.5 rounded-full transition duration-200" aria-label="Open Menu" title="Open Menu">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </nav>
+        </header>
+    
+    <!-- Search Overlay -->
+    <div id="search-overlay" class="fixed inset-0 z-[100] bg-background bg-opacity-95 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="container mx-auto px-4 py-16">
+            <button id="search-close" 
+                class="absolute top-4 right-4 text-primary hover:text-accent p-2" 
+                aria-label="Close Search" 
+                title="Close Search"> 
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h2 class="text-3xl font-serif mb-8 text-primary">Search Project Details</h2>
+            <input type="text" placeholder="Type keywords, technologies, or features..." class="w-full text-4xl p-4 bg-transparent border-b-2 border-border focus:outline-none focus:border-accent text-primary-text" autofocus>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Drawer -->
+    <div id="mobile-menu-drawer" class="fixed inset-0 z-50 pointer-events-none transition-all duration-300">
+        <div id="drawer-backdrop" class="absolute inset-0 bg-black opacity-0 transition-opacity duration-300 pointer-events-none"></div>
+
+        <div id="drawer-content" class="absolute top-0 left-0 right-0 bg-background rounded-b-2xl shadow-2xl p-6 lg:hidden max-h-[80vh] overflow-y-auto transform translate-y-[-100%] transition-transform duration-300 ease-out">
+            
+            <div class="flex justify-between items-center pb-4 border-b border-border">
+                <h3 class="text-xl font-serif font-bold text-accent">Menu</h3>
+                <button id="mobile-menu-close" class="text-primary hover:text-accent p-1.5 rounded-full transition duration-200" aria-label="Close Menu" title="Close Menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <nav class="flex flex-col space-y-2 py-4">
+                <div>
+                    <button class="block text-primary font-semibold text-lg hover:text-accent transition duration-200 py-2 w-full text-left flex justify-between items-center" id="mobile-homes-toggle">
+                        Home <svg class="w-4 h-4 transform transition-transform duration-200 text-primary" id="homes-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-homes-menu" class="hidden pl-4 flex flex-col space-y-1 mt-1 border-l-2 border-border rtl:pl-0 rtl:pr-4 rtl:border-l-0 rtl:border-r-2">
+                        <a href="index.html" class="block text-secondary hover:text-accent transition duration-200 text-base py-1 px-2">Home 1</a>
+                        <a href="home2.html" class="block text-secondary hover:text-accent transition duration-200 text-base py-1 px-2">Home 2</a>
+                    </div>
+                </div>
+                <a href="project-page.html" class="block text-primary font-semibold text-lg hover:text-accent transition duration-200 py-2">Project</a>
+                <a href="articles.html" class="block text-primary font-semibold text-lg hover:text-accent transition duration-200 py-2">Articles</a>
+                <a href="about.html" class="block text-primary font-semibold text-lg hover:text-accent transition duration-200 py-2">About</a>
+                <a href="contact.html" class="block text-primary font-semibold text-lg hover:text-accent transition duration-200 py-2">Contact</a>
+                <!-- <div>
+                    <button class="block text-primary font-semibold text-lg hover:text-accent transition duration-200 py-2 w-full text-left flex justify-between items-center" id="mobile-dashboard-toggle">
+                        Dashboard
+                        <svg class="w-4 h-4 transform transition-transform duration-200 text-primary" id="dashboard-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="mobile-dashboard-menu" class="hidden pl-4 flex flex-col space-y-1 mt-1 border-l-2 border-border rtl:pl-0 rtl:pr-4 rtl:border-l-0 rtl:border-r-2">
+                        <a href="userdash.html" class="block text-secondary hover:text-accent transition duration-200 text-base py-1 px-2">User Dashboard</a>
+                        <a href="dashboard.html" class="block text-secondary hover:text-accent transition duration-200 text-base py-1 px-2">Admin Dashboard</a>
+                    </div>
+                </div> -->
+            </nav>
+
+            <div class="bottom-icons pt-4 border-t border-border mt-4 flex justify-around items-center space-x-4 rtl:space-x-reverse">
+
+                <a href="assets/Resume.pdf" 
+   download="Alex_Morgan_Resume.pdf" 
+   class="icon-btn flex flex-col items-center text-primary hover:text-accent p-2 transition duration-200" 
+   title="Download Resume">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+    </svg>
+    <span class="text-xs mt-1 text-secondary">Resume</span>
+</a>
+                <button id="mobile-lang-icon"
+    class="icon-btn flex flex-col items-center text-primary hover:text-accent p-2 transition duration-200"
+    title="Toggle RTL/LTR Direction">
+    <!-- SVG Icon with stroke instead of fill -->
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" 
+              d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+    </svg>
+    <span class="text-xs mt-1 text-secondary">RTL</span>
+</button>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================= -->
+    <!-- PROJECT DETAILS CONTENT -->
+    <!-- ============================================= -->
+
+    <main class="min-h-screen pt-28 mb-24">
+
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+            <!-- Project Not Found -->
+            <div id="project-not-found" class="project-not-found hidden fade-in">
+                <div class="max-w-3xl mx-auto">
+                    <h1 class="text-4xl md:text-5xl font-serif font-bold text-white mb-6">Project Not Found</h1>
+                    <p class="text-xl text-white/90 mb-8">The project you are looking for does not exist or was removed.</p>
+                    <a href="project-page.html" class="inline-block bg-white text-accent px-8 py-4 rounded-full font-semibold text-lg hover:bg-white/90 transition duration-200">
+                        <i class="fa-solid fa-arrow-left mr-2"></i> Back to Projects
+                    </a>
+                </div>
+            </div>
+
+            <!-- Project Container -->
+            <div id="project-container" class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <article class="lg:col-span-2">
+                    
+                    <!-- Project Header -->
+                    <header id="project-header" class="project-header-section fade-in">
+                        <div class="relative z-10">
+                            <span id="project-category" class="inline-block text-base font-bold px-6 py-3 rounded-full bg-white/20 text-white mb-6 backdrop-blur-sm">Web Design</span>
+                            <h1 id="project-title" class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white mb-8">E-Commerce Platform Redesign</h1>
+                            <div class="flex flex-wrap gap-4 mb-6">
+                                <div class="project-meta-item">
+                                    <i class="fa-solid fa-calendar"></i>
+                                    <span id="project-date">Oct 25, 2025</span>
+                                </div>
+                                <div class="project-meta-item">
+                                    <i class="fa-solid fa-clock"></i>
+                                    <span id="project-duration">8 weeks</span>
+                                </div>
+                                <div class="project-meta-item">
+                                    <i class="fa-solid fa-user"></i>
+                                    <span id="project-client">Fashion Retail Co.</span>
+                                </div>
+                                <div class="project-meta-item">
+                                    <i class="fa-solid fa-check-circle"></i>
+                                    <span id="project-status">Completed</span>
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+
+                    <!-- Project Gallery -->
+                  <section id="project-gallery" class="project-gallery reveal-on-scroll"></section>
+
+                    <!-- Project Overview -->
+                    <section id="project-overview" class="project-content reveal-on-scroll">
+                        <h2>Project Overview</h2>
+                        <p>This project demonstrates a clean, user-friendly design with responsive layouts and smooth functionality.
+It showcases my skills in frontend development, integration, and performance optimization.
+The goal is to provide a practical, modern, and efficient solution for real-world use.</p>
+                        
+                        <div class="tech-stack reveal-on-scroll">
+                            <div class="tech-item">
+                                <i class="fab fa-react tech-icon"></i>
+                                <span>React.js</span>
+                            </div>
+                            <div class="tech-item">
+                                <i class="fab fa-node-js tech-icon"></i>
+                                <span>Node.js</span>
+                            </div>
+                            <div class="tech-item">
+                                <i class="fas fa-database tech-icon"></i>
+                                <span>MongoDB</span>
+                            </div>
+                            <div class="tech-item">
+                                <i class="fab fa-aws tech-icon"></i>
+                                <span>AWS</span>
+                            </div>
+                            <div class="tech-item">
+                                <i class="fab fa-figma tech-icon"></i>
+                                <span>Figma</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- The Challenge -->
+                    <section class="reveal-on-scroll">
+                        <div class="challenge-card">
+                            <span class="challenge-badge">Challenge</span>
+                            <h3 class="text-2xl font-bold mb-4">The Problem</h3>
+                            <p>The existing platform suffered from high bounce rates, poor mobile experience, and complicated checkout process. Users were abandoning carts at a rate of 78%, and mobile conversion was significantly lower than desktop.</p>
+                        </div>
+                    </section>
+
+                    <!-- The Solution -->
+                  <!-- The Solution -->
+<section class="reveal-on-scroll">
+    <div class="challenge-card">
+
+        <!-- Badge -->
+        <span class="challenge-badge challenge-badge-solution">
+            Solution
+        </span>
+
+        <!-- Content -->
+        <h3 class="text-2xl font-bold mb-4">Our Approach</h3>
+
+        <p>
+            We implemented a mobile-first design strategy with simplified navigation,
+            one-click checkout, and personalized product recommendations.
+            The new design focused on speed, accessibility, and intuitive user flows.
+        </p>
+
+        <ul class="mt-4">
+            <li>Redesigned product pages with better visual hierarchy</li>
+            <li>Implemented progressive web app features for mobile</li>
+            <li>Added AI-powered product recommendations</li>
+            <li>Streamlined checkout from 5 steps to 2</li>
+            <li>Improved page load speed by 65%</li>
+        </ul>
+
+    </div>
+</section>
+
+
+                    <!-- Project Timeline -->
+                    <section class="reveal-on-scroll">
+                        <h2>Project Timeline</h2>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4 class="text-xl font-bold text-primary-text mb-2">Discovery & Research</h4>
+                                <p class="text-secondary-text">Week 1-2: User interviews, competitor analysis, and technical assessment</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4 class="text-xl font-bold text-primary-text mb-2">Design & Prototyping</h4>
+                                <p class="text-secondary-text">Week 3-5: Wireframing, UI design, and interactive prototyping</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4 class="text-xl font-bold text-primary-text mb-2">Development</h4>
+                                <p class="text-secondary-text">Week 6-10: Frontend and backend development with continuous testing</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4 class="text-xl font-bold text-primary-text mb-2">Testing & Launch</h4>
+                                <p class="text-secondary-text">Week 11-12: User testing, bug fixes, and production deployment</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Results & Impact -->
+                    <section class="reveal-on-scroll">
+                        <h2>Results & Impact</h2>
+                        <p>The redesigned platform achieved remarkable improvements across all key metrics:</p>
+                        
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <i class="fas fa-chart-line metric-icon"></i>
+                                <div class="metric-value">+42%</div>
+                                <div class="metric-label">Conversion Rate</div>
+                            </div>
+                            <div class="metric-card">
+                                <i class="fas fa-shopping-cart metric-icon"></i>
+                                <div class="metric-value">-62%</div>
+                                <div class="metric-label">Cart Abandonment</div>
+                            </div>
+                            <div class="metric-card">
+                                <i class="fas fa-mobile-alt metric-icon"></i>
+                                <div class="metric-value">+85%</div>
+                                <div class="metric-label">Mobile Conversion</div>
+                            </div>
+                            <div class="metric-card">
+                                <i class="fas fa-bolt metric-icon"></i>
+                                <div class="metric-value">65%</div>
+                                <div class="metric-label">Faster Load Time</div>
+                            </div>
+                        </div>
+                        
+                        <blockquote class="reveal-on-scroll">
+                            "The redesign not only improved our conversion rates but also enhanced brand perception. Our customers now enjoy a seamless shopping experience across all devices."
+                        </blockquote>
+                    </section>
+
+                    <!-- Key Features -->
+                    <section class="reveal-on-scroll">
+                        <h2>Key Features</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                            <div class="bg-card-bg border border-border rounded-xl p-6">
+                                <div class="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+                                    <i class="fas fa-search text-accent text-xl"></i>
+                                </div>
+                                <h4 class="text-lg font-bold mb-2">Advanced Search</h4>
+                                <p class="text-secondary-text">AI-powered search with filters, suggestions, and visual results</p>
+                            </div>
+                            <div class="bg-card-bg border border-border rounded-xl p-6">
+                                <div class="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+                                    <i class="fas fa-bolt text-accent text-xl"></i>
+                                </div>
+                                <h4 class="text-lg font-bold mb-2">One-Click Checkout</h4>
+                                <p class="text-secondary-text">Streamlined checkout process reducing steps from 5 to 2</p>
+                            </div>
+                            <div class="bg-card-bg border border-border rounded-xl p-6">
+                                <div class="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+                                    <i class="fas fa-mobile-alt text-accent text-xl"></i>
+                                </div>
+                                <h4 class="text-lg font-bold mb-2">PWA Support</h4>
+                                <p class="text-secondary-text">Progressive Web App features for native-like mobile experience</p>
+                            </div>
+                            <div class="bg-card-bg border border-border rounded-xl p-6">
+                                <div class="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+                                    <i class="fas fa-robot text-accent text-xl"></i>
+                                </div>
+                                <h4 class="text-lg font-bold mb-2">AI Recommendations</h4>
+                                <p class="text-secondary-text">Personalized product suggestions based on user behavior</p>
+                            </div>
+                        </div>
+                    </section>
+
+                </article>
+
+                <!-- Sidebar -->
+                <aside class="lg:col-span-1">
+                    <!-- Project Info -->
+                    <div class="project-sidebar-card fade-in">
+                        <h3 class="font-semibold text-xl text-primary mb-4">Project Info</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center py-2 border-b border-border">
+                                <span class="text-secondary-text">Category</span>
+                                <span class="font-semibold text-primary-text">Web Design</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-border">
+                                <span class="text-secondary-text">Timeline</span>
+                                <span class="font-semibold text-primary-text">8 Weeks</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-border">
+                                <span class="text-secondary-text">Team Size</span>
+                                <span class="font-semibold text-primary-text">5 Members</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-border">
+                                <span class="text-secondary-text">Budget</span>
+                                <span class="font-semibold text-primary-text">$45,000</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <span class="text-secondary-text">Status</span>
+                                <span class="px-3 py-1 rounded-full bg-success/20 text-success text-sm font-semibold">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Client Testimonial -->
+                  <!-- Client Testimonial -->
+<div class="testimonial-card fade-in delay-200">
+    <div class="relative z-10">
+
+        <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center mr-3">
+                <i class="fas fa-quote-left text-white"></i>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-lg">Sarah Johnson</h4>
+                <p class="text-white/80 text-sm">CEO, Fashion Retail Co.</p>
+            </div>
+        </div>
+
+        <p class="text-white/95 italic leading-relaxed">
+            "Outstanding work! The team delivered beyond our expectations.
+            The new platform has transformed our online business."
+        </p>
+
+    </div>
+</div>
+
+
+                    <!-- Technologies Used -->
+<div class="project-sidebar-card fade-in delay-400">
+    <h3 class="font-semibold text-xl text-primary mb-4">
+        Technologies
+    </h3>
+
+    <div class="flex flex-wrap gap-2">
+        <span class="px-3 py-1.5 bg-accent/10 text-accent rounded-lg text-sm font-medium">
+            React
+        </span>
+        <span class="px-3 py-1.5 bg-accent/10 text-accent rounded-lg text-sm font-medium">
+            Node.js
+        </span>
+        <span class="px-3 py-1.5 bg-accent/10 text-accent rounded-lg text-sm font-medium">
+            MongoDB
+        </span>
+        <span class="px-3 py-1.5 bg-accent/10 text-accent rounded-lg text-sm font-medium">
+            Tailwind CSS
+        </span>
+        <span class="px-3 py-1.5 bg-accent/10 text-accent rounded-lg text-sm font-medium">
+            AWS
+        </span>
+        <span class="px-3 py-1.5 bg-accent/10 text-accent rounded-lg text-sm font-medium">
+            Stripe
+        </span>
+    </div>
+</div>
+
+
+                    <!-- Project Team -->
+<div class="project-sidebar-card fade-in delay-3">
+    <h3 class="font-semibold text-xl text-primary mb-4">Project Team</h3>
+
+    <div class="space-y-3">
+        <div class="flex items-center">
+            <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center mr-3">
+                <i class="fas fa-user text-accent"></i>
+            </div>
+            <div>
+                <h4 class="font-medium text-primary-text">Alex Chen</h4>
+                <p class="text-secondary-text text-sm">Lead Developer</p>
+            </div>
+        </div>
+
+        <div class="flex items-center">
+            <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center mr-3">
+                <i class="fas fa-user text-accent"></i>
+            </div>
+            <div>
+                <h4 class="font-medium text-primary-text">Maria Garcia</h4>
+                <p class="text-secondary-text text-sm">UI/UX Designer</p>
+            </div>
+        </div>
+
+        <div class="flex items-center">
+            <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center mr-3">
+                <i class="fas fa-user text-accent"></i>
+            </div>
+            <div>
+                <h4 class="font-medium text-primary-text">David Kim</h4>
+                <p class="text-secondary-text text-sm">Project Manager</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+                    <!-- Download Case Study -->
+                    <!-- <div class="project-sidebar-card fade-in" style="animation-delay: 0.8s">
+                        <h3 class="font-semibold text-xl text-primary mb-4">Case Study</h3>
+                        <p class="text-secondary-text mb-4">Download detailed case study with metrics and analysis</p>
+                        <a href="#" class="block w-full bg-accent text-white text-center py-3 rounded-lg font-semibold hover:bg-primary transition duration-200">
+                            <i class="fas fa-download mr-2"></i> Download PDF
+                        </a>
+                    </div> -->
+
+                </aside>
+            </div>
+
+            <!-- Related Projects -->
+            <section class="mt-16 reveal-on-scroll">
+                <h2 class="text-3xl font-serif font-bold text-primary mb-8"></h2>
+                <div id="related-projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Related projects will be inserted here -->
+                </div>
+            </section>
+
+        </div>
+    </main>
+    <!-- Footer -->
+    <!-- Footer -->
+    <footer id="main-footer" class="pt-14 bg-slate-900 transition-colors duration-300">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-8 pb-10 border-b border-slate-700">
+                <div class="col-span-2 md:col-span-2 lg:col-span-2">
+                    <h3 class="text-2xl sm:text-3xl font-serif font-bold mb-4 text-accent">GrowwPortfolio</h3>
+                    <p class="text-sm leading-relaxed max-w-xs text-white">
+    The premium destination for curated portfolios, in-depth case studies, and professional insights on design, development, and creative work.
+</p>
+
+                    <div class="flex space-x-4 rtl:space-x-reverse mt-6">
+                        <!-- Social Media Icons -->
+                        <a href="#" class="text-slate-400 hover:text-accent transition duration-200 hover:scale-110" aria-label="Facebook">
+                            <i class="fab fa-facebook-f w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-accent transition duration-200 hover:scale-110" aria-label="Twitter">
+                            <i class="fab fa-twitter w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-accent transition duration-200 hover:scale-110" aria-label="Instagram">
+                            <i class="fab fa-instagram w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-accent transition duration-200 hover:scale-110" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-span-1">
+                    <h4 class="text-lg font-semibold mb-4 text-blue-500">Categories</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="footer-link">Web Design</a></li>
+                        <li><a href="#" class="footer-link">UI/UX</a></li>
+                        <li><a href="#" class="footer-link">Development</a></li>
+                        <li><a href="#" class="footer-link">Branding</a></li>
+                        <li><a href="#" class="footer-link">Photography</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-span-1">
+                    <h4 class="text-lg font-semibold mb-4 text-blue-500">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="footer-link">Home</a></li>
+                        <li><a href="project-page.html" class="footer-link">Project</a></li>
+                        <li><a href="articles.html" class="footer-link">Articles</a></li>
+                        <li><a href="about.html" class="footer-link">About</a></li>
+                        <li><a href="contact.html" class="footer-link">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-span-2 md:col-span-1 mt-6 md:mt-0">
+                    <h4 class="footer-heading font-semibold text-lg mb-4">Get My Profile</h4>
+                    <p class="text-sm mb-4 text-white">
+    Sign up for exclusive portfolio insights and updates.
+</p>
+
+                    <div class="flex flex-col space-y-3">
+                        <input type="email" placeholder="Your email address" aria-label="Email for Newsletter" class="p-3 text-sm rounded-lg bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-accent focus:outline-none text-white placeholder-slate-400">
+                        <button class="btn-accent font-semibold py-3 rounded-lg hover:opacity-90 transition duration-200 shadow-lg">
+                            Subscribe
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+           <div class="py-4 text-center text-white text-xs">
+    &copy; 2025 GrowwPortfolio. All rights reserved. |
+    <span class="hover:text-accent transition duration-200 cursor-pointer">
+        Privacy Policy
+    </span> |
+    <span class="hover:text-accent transition duration-200 cursor-pointer">
+        Terms of Service
+    </span>
+</div>
+
+        </div>
+    </footer>
+    <script>
+        // Projects Data (Same as project page)
+       // Projects Data (FULL LIST for all pages)
+const PROJECTS_DATA = [
+    {
+        id: 1,
+        title: "E-Commerce Platform Redesign",
+        category: "web",
+        type: "Web Design",
+        date: "2025-10-25",
+        duration: "8 weeks",
+        progress: 100,
+        excerpt: "Complete redesign of a major e-commerce platform focusing on user experience and conversion optimization.",
+        image: "/assets/ecom.jpg",
+        client: "Fashion Retail Co.",
+        technologies: ["React", "Node.js", "MongoDB", "Tailwind CSS"],
+        tags: ["ecommerce", "UI/UX", "responsive", "shopping"],
+        featured: true,
+        status: "completed",
+        gallery: [
+            "/assets/e1.jpeg",
+            "/assets/e2.webp",
+            "/assets/down.webp",
+            "/assets/e4.jpg"
+        ]
+    },
+    {
+        id: 2,
+        title: "Health & Fitness Mobile App",
+        category: "mobile",
+        type: "Mobile App",
+        date: "2025-10-20",
+        duration: "12 weeks",
+        progress: 85,
+        excerpt: "Native iOS and Android application for tracking workouts, nutrition, and health metrics.",
+        image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&auto=format&fit=crop",
+        client: "HealthTrack Inc.",
+        technologies: ["React Native", "Firebase", "Redux", "GraphQL"],
+        tags: ["mobile", "health", "fitness", "tracking"],
+        featured: false,
+        status: "in-progress",
+        gallery: [
+            "/assets/h1.jpg",
+            "/assets/h2.jpg",
+            "/assets/h3.png",
+            "/assets/h4.webp"
+        ]
+    },
+    {
+        id: 3,
+        title: "Corporate Brand Identity System",
+        category: "branding",
+        type: "Branding",
+        date: "2025-10-15",
+        duration: "6 weeks",
+        progress: 100,
+        excerpt: "Complete brand overhaul including logo, typography, color palette, and brand guidelines.",
+        image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&auto=format&fit=crop",
+        client: "TechCorp Solutions",
+        technologies: ["Illustrator", "InDesign", "Photoshop", "Figma"],
+        tags: ["branding", "identity", "logo", "corporate"],
+        featured: false,
+        status: "completed",
+       gallery: [
+            "/assets/b1.jpg",
+            "/assets/b2.jpg",
+            "/assets/b3.jpg",
+            "/assets/bb4.jpg"
+        ]
+    },
+    {
+        id: 4,
+        title: "Dashboard UI/UX for Analytics Platform",
+        category: "uiux",
+        type: "UI/UX",
+        date: "2025-10-10",
+        duration: "10 weeks",
+        progress: 100,
+        excerpt: "User-centered design for complex data visualization and analytics dashboard.",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop",
+        client: "DataViz Analytics",
+        technologies: ["Figma", "Adobe XD", "Sketch", "Principle"],
+        tags: ["dashboard", "analytics", "UI", "data"],
+        featured: true,
+        status: "completed",
+       gallery: [
+            "/assets/d1.png",
+            "/assets/d3.png",
+            "/assets/dd3.png",
+            "/assets/d4.gif"
+        ]
+
+    },
+    {
+        id: 5,
+        title: "Real Estate Management System",
+        category: "development",
+        type: "Development",
+        date: "2025-10-05",
+        duration: "16 weeks",
+        progress: 60,
+        excerpt: "Full-stack property management system with CRM, booking, and payment integration.",
+        image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&auto=format&fit=crop",
+        client: "Property Masters",
+        technologies: ["Vue.js", "Laravel", "MySQL", "AWS"],
+        tags: ["realestate", "management", "CRM", "booking"],
+        featured: false,
+        status: "in-progress",
+         gallery: [
+            "/assets/rr1.jpg",
+            "/assets/r2.jpg",
+            "/assets/r3.webp",
+            "/assets/r4.avif"
+        ]
+    },
+    {
+        id: 6,
+        title: "Educational Platform UI Redesign",
+        category: "uiux",
+        type: "UI/UX",
+        date: "2025-09-30",
+        duration: "8 weeks",
+        progress: 100,
+        excerpt: "Modern redesign of an educational platform focusing on accessibility and engagement.",
+        image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop",
+        client: "EduLearn Academy",
+        technologies: ["Figma", "Webflow", "GSAP", "CSS Grid"],
+        tags: ["education", "platform", "redesign", "accessible"],
+        featured: false,
+        status: "completed",
+        gallery: [
+            "/assets/edu1.webp",
+            "/assets/edu2.jpg",
+            "/assets/edu3.jpeg",
+            "/assets/edu4.webp"
+        ]
+    },
+    {
+        id: 7,
+        title: "Restaurant Mobile Ordering App",
+        category: "mobile",
+        type: "Mobile App",
+        date: "2025-09-25",
+        duration: "14 weeks",
+        progress: 100,
+        excerpt: "Mobile ordering and payment solution for restaurant chains with real-time updates.",
+        image: "https://images.unsplash.com/photo-1559329007-40df8a9345d8?w=800&auto=format&fit=crop",
+        client: "FoodChain Restaurants",
+        technologies: ["Flutter", "Firebase", "Stripe", "Google Maps"],
+        tags: ["restaurant", "ordering", "mobile", "payment"],
+        featured: false,
+        status: "completed",
+        gallery: [
+            "/assets/res1.jpg",
+            "/assets/res2.webp",
+            "/assets/res3.webp",
+            "/assets/res4.jpeg"
+        ]
+    },
+    {
+        id: 8,
+        title: "Portfolio Website Design",
+        category: "web",
+        type: "Web Design",
+        date: "2025-09-20",
+        duration: "4 weeks",
+        progress: 100,
+        excerpt: "Minimalist portfolio website for creative professionals with interactive elements.",
+        image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop",
+        client: "Creative Agency",
+        technologies: ["HTML/CSS", "JavaScript", "GSAP", "Netlify"],
+        tags: ["portfolio", "creative", "minimal", "interactive"],
+        featured: false,
+        status: "completed",
+        gallery: [
+            "/assets/po1.jpg",
+            "/assets/po2.webp",
+            "/assets/po3.webp",
+            "/assets/po4.jpg"
+        ]
+    }
+];
+
+        // Get project by ID
+        function getProjectById(id) {
+            return PROJECTS_DATA.find(project => project.id === parseInt(id));
+        }
+
+        // Render project details
+        // Render Gallery Images Dynamically
+function renderProjectGallery(project) {
+    const galleryContainer = document.getElementById("project-gallery");
+
+    if (!project.gallery || project.gallery.length === 0) {
+        galleryContainer.innerHTML = "<p class='text-secondary-text'>No gallery available</p>";
+        return;
+    }
+
+    const positions = [
+        "gallery-item-1",
+        "gallery-item-2",
+        "gallery-item-3",
+        "gallery-item-4",
+        "gallery-item-5"
+    ];
+
+    galleryContainer.innerHTML = project.gallery
+        .slice(0, 5)
+        .map((img, index) => `
+            <img src="${img}" 
+                 alt="${project.title} Image ${index + 1}" 
+                 class="gallery-image ${positions[index]}">
+        `)
+        .join("");
+}
+
+        function renderProjectDetails(project) {
+            renderProjectGallery(project);
+
+            if (!project) {
+                document.getElementById('project-container').classList.add('hidden');
+                document.getElementById('project-not-found').classList.remove('hidden');
+                return;
+            }
+            
+
+            // Update project details
+            document.getElementById('project-category').textContent = project.type;
+            document.getElementById('project-title').textContent = project.title;
+            document.getElementById('project-date').textContent = new Date(project.date).toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            document.getElementById('project-duration').textContent = project.duration;
+            document.getElementById('project-client').textContent = project.client;
+            document.getElementById('project-status').textContent = project.status === 'completed' ? 'Completed' : 'In Progress';
+
+            // Render related projects
+            renderRelatedProjects(project);
+        }
+
+        // Render related projects
+        function renderRelatedProjects(currentProject) {
+            const related = PROJECTS_DATA
+                .filter(p => p.id !== currentProject.id && p.category === currentProject.category)
+                .slice(0, 3);
+
+            const relatedHtml = related.map(project => `
+                <div class="related-project-card">
+                    <a href="project-details.html?id=${project.id}">
+                        <img src="${project.image}" alt="${project.title}" class="w-full h-48 object-cover">
+                    </a>
+                    <div class="p-6">
+                        <span class="text-xs font-semibold text-accent uppercase tracking-wide mb-2 block">${project.type}</span>
+                        <h4 class="text-lg font-semibold text-primary-text line-clamp-2 mb-3">
+                            <a href="project-details.html?id=${project.id}" class="hover:text-accent transition duration-200">
+                                ${project.title}
+                            </a>
+                        </h4>
+                        <p class="text-secondary-text text-sm line-clamp-2 mb-4">${project.excerpt}</p>
+                        <div class="flex items-center text-xs text-secondary-text">
+                            <i class="fa-solid fa-calendar mr-1"></i>
+                            <span>${new Date(project.date).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('related-projects-grid').innerHTML = relatedHtml;
+        }
+
+        // Scroll reveal animation
+        function setupScrollReveal() {
+            const reveals = document.querySelectorAll('.reveal-on-scroll');
+            
+            const revealOnScroll = () => {
+                reveals.forEach(element => {
+                    const windowHeight = window.innerHeight;
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementVisible = 100;
+                    
+                    if (elementTop < windowHeight - elementVisible) {
+                        element.classList.add('visible');
+                    }
+                });
+            };
+            
+            window.addEventListener('scroll', revealOnScroll);
+            revealOnScroll();
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const projectId = params.get('id');
+            const project = getProjectById(projectId);
+            
+            renderProjectDetails(project);
+            
+            // Setup scroll reveal after content is loaded
+            setTimeout(setupScrollReveal, 100);
+        });
+
+        // === HEADER/FOOTER FUNCTIONALITY (Same as project page) ===
+        document.addEventListener('DOMContentLoaded', () => {
+            const html = document.documentElement;
+
+            // 1. Theme Toggle & Persistence
+            const themeToggle = document.getElementById('theme-toggle');
+            const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+            const lightIcons = document.querySelectorAll('.light-icon');
+            const darkIcons = document.querySelectorAll('.dark-icon');
+
+            const applyTheme = (theme) => {
+                html.setAttribute('data-theme', theme);
+                lightIcons.forEach(icon => icon.classList.toggle('hidden', theme === 'dark'));
+                darkIcons.forEach(icon => icon.classList.toggle('hidden', theme === 'light'));
+            };
+
+            const initializeTheme = () => {
+                const storedTheme = localStorage.getItem('theme');
+                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                
+                const initialTheme = (storedTheme === 'dark' || (!storedTheme && systemPrefersDark)) ? 'dark' : 'light';
+                applyTheme(initialTheme);
+            };
+
+            const toggleTheme = () => {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            };
+
+            if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+            if (mobileThemeToggle) mobileThemeToggle.addEventListener('click', toggleTheme);
+            initializeTheme();
+
+            // 2. Search Overlay
+            const searchOverlay = document.getElementById('search-overlay');
+            const searchOpenBtns = [document.getElementById('search-open'), document.getElementById('mobile-search-open')].filter(Boolean);
+            const searchCloseBtn = document.getElementById('search-close');
+
+            const toggleSearch = (open) => {
+                if (open) {
+                    searchOverlay.classList.remove('hidden');
+                    setTimeout(() => searchOverlay.classList.remove('opacity-0'), 10);
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    searchOverlay.classList.add('opacity-0');
+                    searchOverlay.addEventListener('transitionend', () => {
+                        searchOverlay.classList.add('hidden');
+                        document.body.style.overflow = '';
+                    }, { once: true });
+                }
+            };
+
+            searchOpenBtns.forEach(btn => btn.addEventListener('click', () => toggleSearch(true)));
+            if (searchCloseBtn) searchCloseBtn.addEventListener('click', () => toggleSearch(false));
+            if (searchOverlay) searchOverlay.addEventListener('click', (e) => {
+                if (e.target === searchOverlay) toggleSearch(false);
+            });
+
+            // 3. Mobile Menu Bottom Sheet Drawer
+            const menuDrawer = document.getElementById('mobile-menu-drawer');
+            const menuBackdrop = document.getElementById('drawer-backdrop');
+            const menuContent = document.getElementById('drawer-content');
+            const menuOpenBtn = document.getElementById('mobile-menu-open');
+            const menuCloseBtn = document.getElementById('mobile-menu-close');
+            const mobileHomesToggle = document.getElementById('mobile-homes-toggle');
+            const mobileHomesMenu = document.getElementById('mobile-homes-menu');
+            const homesIcon = document.getElementById('homes-icon');
+            const HIDDEN_CLASS = 'translate-y-[-100%]';
+
+            const openDrawer = () => {
+                menuDrawer.classList.remove('pointer-events-none');
+                menuContent.classList.remove(HIDDEN_CLASS);
+                menuBackdrop.classList.add('opacity-50', 'pointer-events-auto');
+                document.body.style.overflow = 'hidden';
+            };
+
+            const closeDrawer = () => {
+                menuContent.classList.add(HIDDEN_CLASS);
+                menuBackdrop.classList.remove('opacity-50', 'pointer-events-auto');
+                menuContent.addEventListener('transitionend', () => {
+                    menuDrawer.classList.add('pointer-events-none');
+                    document.body.style.overflow = '';
+                }, { once: true });
+            };
+
+            if (menuOpenBtn) menuOpenBtn.addEventListener('click', openDrawer);
+            if (menuCloseBtn) menuCloseBtn.addEventListener('click', closeDrawer);
+            if (menuBackdrop) menuBackdrop.addEventListener('click', closeDrawer);
+
+            // Mobile Dropdown Toggle - Homes
+            if (mobileHomesToggle) mobileHomesToggle.addEventListener('click', () => {
+                mobileHomesMenu.classList.toggle('hidden');
+                homesIcon.classList.toggle('rotate-180');
+            });
+
+            // Mobile Dropdown Toggle - Dashboard
+            const mobileDashboardToggle = document.getElementById('mobile-dashboard-toggle');
+            const mobileDashboardMenu = document.getElementById('mobile-dashboard-menu');
+            const dashboardIcon = document.getElementById('dashboard-icon');
+
+            if (mobileDashboardToggle) {
+                mobileDashboardToggle.addEventListener('click', () => {
+                    mobileDashboardMenu.classList.toggle('hidden');
+                    dashboardIcon.classList.toggle('rotate-180');
+                });
+            }
+
+            // 4. Global Language Toggle (Globe Icon)
+            const langButton = document.getElementById('lang-icon');
+
+            const toggleLanguage = () => {
+                const currentLang = localStorage.getItem('language') || 'en';
+                const newLang = currentLang === 'en' ? 'ar' : 'en';
+
+                localStorage.setItem('language', newLang);
+
+                document.documentElement.setAttribute(
+                    'dir',
+                    newLang === 'ar' ? 'rtl' : 'ltr'
+                );
+            };
+
+            if (langButton) langButton.addEventListener('click', toggleLanguage);
+
+            const savedLang = localStorage.getItem('language') || 'en';
+            document.documentElement.setAttribute('dir', savedLang === 'ar' ? 'rtl' : 'ltr');
+            
+            const mobileLangButton = document.getElementById('mobile-lang-icon');
+            if (mobileLangButton) {
+                mobileLangButton.addEventListener('click', toggleLanguage);
+            }
+
+            // 5. Improved Dropdown Behavior
+            const dropdownWrappers = document.querySelectorAll('.dropdown-wrapper');
+            let hideTimeout;
+            
+            dropdownWrappers.forEach(wrapper => {
+                const dropdownMenu = wrapper.querySelector('.dropdown-menu');
+                
+                wrapper.addEventListener('mouseenter', () => {
+                    clearTimeout(hideTimeout);
+                    dropdownMenu.style.opacity = '1';
+                    dropdownMenu.style.visibility = 'visible';
+                    dropdownMenu.style.transform = 'translateY(0)';
+                });
+                
+                wrapper.addEventListener('mouseleave', () => {
+                    hideTimeout = setTimeout(() => {
+                        dropdownMenu.style.opacity = '0';
+                        dropdownMenu.style.visibility = 'hidden';
+                        dropdownMenu.style.transform = 'translateY(-10px)';
+                    }, 300);
+                });
+                
+                if (dropdownMenu) {
+                    dropdownMenu.addEventListener('mouseenter', () => {
+                        clearTimeout(hideTimeout);
+                    });
+                    
+                    dropdownMenu.addEventListener('mouseleave', () => {
+                        hideTimeout = setTimeout(() => {
+                            dropdownMenu.style.opacity = '0';
+                            dropdownMenu.style.visibility = 'hidden';
+                            dropdownMenu.style.transform = 'translateY(-10px)';
+                        }, 200);
+                    });
+                }
+            });
+
+            // 6. Close dropdowns when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.dropdown-wrapper')) {
+                    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                        menu.style.opacity = '0';
+                        menu.style.visibility = 'hidden';
+                        menu.style.transform = 'translateY(-10px)';
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

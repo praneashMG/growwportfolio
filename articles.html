@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./assets/growwpark_logo.jpg" type="image/jpeg">
+<title>Growwpark Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- CSS Variables for Dynamic Colors --- */
+        :root, html[data-theme='light'] {
+            --color-background: #F3F4F6; /* Light BG */
+            --color-primary-text: #1E293B; /* Dark Blue-800 for text */
+            --color-secondary-text: #475569; /* Slate-600 */
+            --color-accent: #3B82F6; /* Accent Blue */
+            --color-primary: #1E3A8A; /* Primary Dark Blue */
+            --color-secondary: #0EA5E9; /* Secondary Sky Blue */
+            --color-border: #E2E8F0; /* Slate-200 */
+            --color-hover: #E0F2FE; /* Sky-100 */
+            --color-footer-bg: #1E293B; /* Dark Blue-800 for footer */
+            --color-footer-text: #F1F5F9; 
+            --color-card-bg: #FFFFFF;
+        }
+        html[data-theme='dark'] {
+            --color-background: #0F172A; /* Dark BG */
+            --color-primary-text: #F8FAFC; 
+            --color-secondary-text: #CBD5E1;
+            --color-accent: #3B82F6; /* Accent Blue */
+            --color-primary: #60A5FA; /* Lighter Blue for dark mode */
+            --color-secondary: #38BDF8; /* Sky-400 */
+            --color-border: #334155; /* Slate-700 */
+            --color-hover: #1E293B; /* Blue-800 */
+            --color-footer-bg: #020617; /* Darker footer */
+            --color-footer-text: #E2E8F0;
+            --color-card-bg: #1E293B;
+        }
+        
+        /* Apply Variables and Base Font */
+        body {
+            background-color: var(--color-background);
+            color: var(--color-primary-text);
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        /* Utility Class Aliases */
+        .text-primary-text { color: var(--color-primary-text); }
+        .text-secondary-text { color: var(--color-secondary-text); }
+        .text-accent { color: var(--color-accent); }
+        .text-primary { color: var(--color-primary); }
+        .text-secondary { color: var(--color-secondary); }
+        .bg-background { background-color: var(--color-background); }
+        .bg-hover { background-color: var(--color-hover); }
+        .border-border { border-color: var(--color-border); }
+        
+        /* Header Accent Color */
+        .header-accent {
+            color: var(--color-primary);
+        }
+        #main-header nav {
+            background: var(--color-card-bg);
+            border-radius: 9999px;
+            padding: 10px 25px;
+            margin: 15px auto;
+            max-width: 1200px;
+            box-shadow: 0 10px 25px rgba(30, 58, 138, 0.15);
+        }
+    
+        /* Footer Specific Overrides */
+        #main-footer {
+            background-color: var(--color-footer-bg);
+            color: var(--color-footer-text);
+        }
+        #main-footer .footer-heading {
+            color: var(--color-footer-text);
+        }
+        #main-footer .footer-link {
+                color: #ffffff;           /* WHITE */
+
+            transition: color 0.2s;
+        }
+        #main-footer .footer-link:hover {
+            color: var(--color-accent);
+        }
+
+        /* Nav Link Underline Animation */
+        .nav-link {
+            position: relative;
+            transition: color 0.3s;
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 2px;
+            background-color: var(--color-accent);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            transform: scaleX(1);
+        }
+
+        /* Glow Effects */
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+        }
+        
+        .glow-on-hover:hover {
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.3);
+        }
+
+        /* IMPROVED DROPDOWN WITH BUFFER ZONE */
+        .dropdown-wrapper {
+            position: relative;
+        }
+
+        /* Create invisible buffer zone above dropdown */
+        .dropdown-wrapper::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 20px; /* ~2cm buffer zone */
+            bottom: 100%; /* Position above dropdown */
+            z-index: 100;
+            background: transparent;
+        }
+        
+        /* Dropdown Menu Styling */
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 5px); /* Space between button and menu */
+            left: 0;
+            background-color: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px rgba(30, 58, 138, 0.15);
+            min-width: 200px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        /* Show dropdown when hovering over wrapper */
+        .dropdown-wrapper:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            display: block;
+        }
+        
+        /* Keep dropdown open when hovering over menu */
+        .dropdown-menu:hover {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            display: block;
+        }
+        
+        /* Dropdown items */
+        .dropdown-menu a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--color-primary-text);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        .dropdown-menu a:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-menu a:hover {
+            background-color: var(--color-hover);
+            color: var(--color-accent);
+            padding-left: 1.25rem;
+        }
+        
+        /* Connect dropdown to button with invisible bridge */
+        .dropdown-wrapper .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: transparent;
+        }
+
+        /* Custom Styles for Articles Page */
+        .section-heading {
+            font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+            color: var(--color-primary-text);
+            font-size: 1.875rem;
+            font-weight: 700;
+        }
+        
+        /* Mobile dropdown adjustments */
+ @media (max-width: 1023px) {
+    .dropdown-wrapper::before {
+        display: none;
+    }
+
+    .dropdown-menu {
+        position: static;
+        margin-top: 0.5rem;
+        box-shadow: none;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+        display: none;
+    }
+
+    .dropdown-wrapper:hover .dropdown-menu {
+        display: block;
+    }
+}
+
+        
+        /* Smooth animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-down {
+            animation: fadeInDown 0.3s ease forwards;
+        }
+
+        /* RTL Specific Adjustments (Mobile Menu Footer) */
+        [dir="rtl"] #mobile-menu-drawer .flex-col.items-center {
+            flex-direction: column;
+        }
+
+        /* Updated button styles */
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--color-accent);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-accent {
+            background-color: var(--color-accent);
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .btn-accent:hover {
+            background-color: var(--color-secondary);
+            box-shadow: 0 0 20px rgba(14, 165, 233, 0.4);
+        }
+
+        /* ============================================= */
+        /* NEW PROFESSIONAL ARTICLES PAGE STYLES */
+        /* ============================================= */
+
+        /* Hero Section */
+        .articles-hero {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+            border-radius: 1.5rem;
+            padding: 5rem 2rem;
+            margin: 2rem 0 3rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .articles-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" opacity="0.1"><path d="M0,0 L1000,0 L1000,100 Q500,80 0,100 Z" fill="white"/></svg>') bottom center no-repeat;
+            background-size: cover;
+        }
+
+        /* Statistics */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .stat-card {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--color-secondary-text);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .filter-input {
+            transition: all 0.3s ease;
+            background: var(--color-background);
+            border: 1px solid var(--color-border);
+        }
+        
+        .filter-input:focus {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Article Cards - Professional Design */
+        .article-card-pro {
+            background: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 1rem;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%;
+        }
+        
+        .article-card-pro:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--color-accent);
+        }
+        
+        .article-image-container {
+            position: relative;
+            height: 240px;
+            overflow: hidden;
+        }
+        
+        .article-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .article-card-pro:hover .article-image {
+            transform: scale(1.05);
+        }
+        
+        .category-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--color-accent);
+            color: white;
+            padding: 0.25rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .article-content {
+            padding: 1.5rem;
+        }
+        
+        .article-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+            color: var(--color-secondary-text);
+        }
+        
+        .article-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .article-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 0.75rem;
+            color: var(--color-primary-text);
+        }
+        
+        .article-excerpt {
+    color: var(--color-secondary-text);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+
+    /* ✅ Standard property for compatibility */
+    line-clamp: 3;
+
+    overflow: hidden;
+}
+
+        
+        .article-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .article-tag {
+            background: var(--color-hover);
+            color: var(--color-accent);
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .article-tag:hover {
+            background: var(--color-accent);
+            color: white;
+        }
+
+        /* Featured Article */
+        .featured-article {
+            grid-column: span 2;
+        }
+        
+        .featured-article .article-image-container {
+            height: 320px;
+        }
+        
+        .featured-article .article-title {
+            font-size: 1.5rem;
+        }
+
+        /* Pagination */
+        .pagination-pro {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+        }
+        
+        .pagination-btn-pro {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--color-border);
+            background: var(--color-card-bg);
+            color: var(--color-primary-text);
+            transition: all 0.2s ease;
+        }
+        
+        .pagination-btn-pro:hover:not(.active) {
+            background: var(--color-hover);
+            border-color: var(--color-accent);
+        }
+        
+        .pagination-btn-pro.active {
+            background: var(--color-accent);
+            color: white;
+            border-color: var(--color-accent);
+        }
+
+        /* Newsletter CTA */
+        .newsletter-cta-pro {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+            border-radius: 1.5rem;
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .newsletter-cta-pro::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" opacity="0.1"><path d="M0,0 L1000,0 L1000,100 Q500,80 0,100 Z" fill="white"/></svg>') bottom center no-repeat;
+            background-size: cover;
+        }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(90deg, var(--color-primary), var(--color-accent), var(--color-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .featured-article {
+                grid-column: span 1;
+            }
+            
+            .featured-article .article-image-container {
+                height: 240px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .articles-hero {
+                padding: 3rem 1.5rem;
+            }
+            
+            .filter-bar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Header with the same design as home2.html -->
+    <header class="fixed top-0 left-0 w-full z-50 transition-colors duration-300" id="main-header">
+        <nav class="mx-auto max-w-[1200px] px-4 sm:px-3 lg:px-4 py-3 flex 
+        items-center justify-between h-16 bg-white rounded-full shadow-xl border border-border">
+
+                <a href="index.html" class="text-2xl sm:text-3xl font-serif font-extrabold tracking-wide">
+    <span class="header-accent">Groww</span><span class="text-accent">Portfolio</span>
+</a>
+
+
+                <div class="hidden lg:flex items-center space-x-6">
+                    <div class="flex space-x-6 rtl:space-x-reverse rtl:ml-6 text-primary-text font-medium">
+                        
+                        <div class="dropdown-wrapper">
+                            <button class="nav-link flex items-center text-primary-text">
+                                Home
+                                <svg class="w-3 h-3 ml-1 relative top-[2.5px] transition-transform duration-200 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+                            
+                            <div class="dropdown-menu">
+                                <a href="index.html" class="flex items-center gap-2 px-4 py-3 hover:bg-hover text-sm text-primary-text transition duration-150">
+                                    <i class="fa-solid fa-house text-accent"></i>
+                                    Home 1
+                                </a>
+
+                                <a href="home2.html" class="flex items-center gap-2 px-4 py-3 hover:bg-hover text-sm text-primary-text transition duration-150">
+                                    <i class="fa-solid fa-house text-accent"></i>
+                                    Home 2
+                                </a>
+                            </div>
+                        </div>                      
+                        <a href="project-page.html" class="nav-link">Project</a>
+                        <a href="articles.html" class="nav-link active">Articles</a>
+                        <a href="about.html" class="nav-link">About</a>
+                        <a href="contact.html" class="nav-link">Contact</a>
+                        
+                        <!-- <div class="dropdown-wrapper">
+                            <button class="nav-link flex items-center text-primary-text">
+                                Dashboard
+                                <svg class="w-3 h-3 ml-1 relative top-[2.5px] transition-transform duration-200 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </button>
+
+                            <div class="dropdown-menu fade-in-down">
+                                <a href="userdash.html" class="block px-4 py-3 hover:bg-hover text-sm text-primary-text transition duration-150">
+                                    User Dashboard
+                                </a>
+                                <a href="dashboard.html" class="block px-4 py-3 hover:bg-hover text-sm text-primary-text transition duration-150">
+                                    Admin Dashboard
+                                </a>
+                            </div>
+                        </div> -->
+
+                    </div>
+                    <div class="w-px h-6 bg-border mx-3"></div>
+                    
+                                    <div class="flex items-center space-x-4 rtl:space-x-reverse rtl:mr-4">
+<!-- 🔽 RESUME DOWNLOAD (DESKTOP FIX) -->
+    <a href="assets/Resume.pdf"
+       download="Alex_Morgan_Resume.pdf"
+       class="icon-btn text-primary hover:text-accent p-1.5 rounded-full transition duration-200 glow-on-hover"
+       title="Download Resume"
+       aria-label="Download Resume">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+    </a>                        <button id="search-open" class="icon-btn text-primary hover:text-accent p-1.5 rounded-full transition duration-200 glow-on-hover" aria-label="Open Search" title="Open Search">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </button>
+                        
+                        <button id="theme-toggle" class="icon-btn text-primary hover:text-accent p-1.5 rounded-full transition duration-200 glow-on-hover" aria-label="Toggle Theme" title="Toggle Theme">
+                            <svg class="w-6 h-6 light-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                            <svg class="w-6 h-6 dark-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                        </button>
+                        <button id="lang-icon" 
+                            class="text-primary hover:text-accent p-1.5 rounded-full transition duration-200 glow-on-hover"
+                            title="Change Language"
+                            aria-label="Change Language"
+                        >
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                    d="M12 3a9 9 0 100 18 9 9 0 000-18zm0 0c2.5 2.8 2.5 12.2 0 15m0-15c-2.5 2.8-2.5 12.2 0 15M3 12h18" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center lg:hidden space-x-4 rtl:space-x-reverse rtl:ml-4">
+                    <!-- <button id="mobile-search-open" class="icon-btn text-primary hover:text-accent p-1.5 rounded-full transition duration-200" aria-label="Open Search" title="Open Search">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </button> -->
+
+                    <button id="mobile-theme-toggle" class="text-primary hover:text-accent p-1.5 rounded-full transition duration-200" aria-label="Toggle Theme" title="Toggle Theme">
+                        <svg class="w-6 h-6 light-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+
+                        <svg class="w-6 h-6 dark-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    
+                    <button id="mobile-menu-open" class="icon-btn text-primary hover:text-accent p-1.5 rounded-full transition duration-200" aria-label="Open Menu" title="Open Menu">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </nav>
+        </header>
+    
+    <!-- Search Overlay -->
+    <div id="search-overlay" class="fixed inset-0 z-[100] bg-background bg-opacity-95 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="container mx-auto px-4 py-16">
+            <button id="search-close" 
+                class="absolute top-4 right-4 text-primary hover:text-accent p-2" 
+                aria-label="Close Search" 
+                title="Close Search"> 
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h2 class="text-3xl font-serif mb-8 text-primary">What are you looking for?</h2>
+            <input type="text" placeholder="Start typing..." class="w-full text-4xl p-4 bg-transparent border-b-2 border-border focus:outline-none focus:border-accent text-primary-text" autofocus>
+            <div class="mt-8 text-secondary">Popular searches: **Technology**, **Style**, **Policy**</div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Drawer -->
+    <div id="mobile-menu-drawer" class="fixed inset-0 z-50 pointer-events-none transition-all duration-300">
+        <div id="drawer-backdrop" class="absolute inset-0 bg-black opacity-0 transition-opacity duration-300 pointer-events-none"></div>
+
+        <div id="drawer-content" class="absolute top-0 left-0 right-0 bg-background rounded-b-2xl shadow-2xl p-6 lg:hidden max-h-[80vh] overflow-y-auto transform translate-y-[-100%] transition-transform duration-300 ease-out">
+            
+            <div class="flex justify-between items-center pb-4 border-b border-border">
+                <h3 class="text-xl font-serif font-bold text-accent">Menu</h3>
+                <button id="mobile-menu-close" class="text-primary hover:text-accent p-1.5 rounded-full transition duration-200" aria-label="Close Menu" title="Close Menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <nav class="flex flex-col space-y-2 py-4">
+                <div>
+                    <button class="block text-primary font-semibold text-lg hover:text-accent transition duration-200 py-2 w-full text-left flex justify-between items-center" id="mobile-homes-toggle">
+                        Home <svg class="w-4 h-4 transform transition-transform duration-200 text-primary" id="homes-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-homes-menu" class="hidden pl-4 flex flex-col space-y-1 mt-1 border-l-2 border-border rtl:pl-0 rtl:pr-4 rtl:border-l-0 rtl:border-r-2">
+                        <a href="index.html" class="block text-secondary hover:text-accent transition duration-200 text-base py-1 px-2">Home 1</a>
+                        <a href="home2.html" class="block text-secondary hover:text-accent transition duration-200 text-base py-1 px-2">Home 2</a>
+                    </div>
+                </div>
+                <a href="project-page.html" class="block text-primary font-semibold text-lg hover:text-accent transition duration-200 py-2">Project</a>
+                <a href="articles.html" class="block text-primary font-semibold text-lg hover:text-accent transition duration-200 py-2">Articles</a>
+                <a href="about.html" class="block text-primary font-semibold text-lg hover:text-accent transition duration-200 py-2">About</a>
+                <a href="contact.html" class="block text-primary font-semibold text-lg hover:text-accent transition duration-200 py-2">Contact</a>
+                <!-- <div>
+                    <button class="block text-primary font-semibold text-lg hover:text-accent transition duration-200 py-2 w-full text-left flex justify-between items-center" id="mobile-dashboard-toggle">
+                        Dashboard
+                        <svg class="w-4 h-4 transform transition-transform duration-200 text-primary" id="dashboard-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="mobile-dashboard-menu" class="hidden pl-4 flex flex-col space-y-1 mt-1 border-l-2 border-border rtl:pl-0 rtl:pr-4 rtl:border-l-0 rtl:border-r-2">
+                        <a href="userdash.html" class="block text-secondary hover:text-accent transition duration-200 text-base py-1 px-2">User Dashboard</a>
+                        <a href="dashboard.html" class="block text-secondary hover:text-accent transition duration-200 text-base py-1 px-2">Admin Dashboard</a>
+                    </div>
+                </div> -->
+            </nav>
+
+            <div class="bottom-icons pt-4 border-t border-border mt-4 flex justify-around items-center space-x-4 rtl:space-x-reverse">
+
+                <a href="assets/Resume.pdf" 
+   download="Alex_Morgan_Resume.pdf" 
+   class="icon-btn flex flex-col items-center text-primary hover:text-accent p-2 transition duration-200" 
+   title="Download Resume">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+    </svg>
+    <span class="text-xs mt-1 text-secondary">Resume</span>
+</a>
+                <button id="mobile-lang-icon"
+    class="icon-btn flex flex-col items-center text-primary hover:text-accent p-2 transition duration-200"
+    title="Toggle RTL/LTR Direction">
+    <!-- SVG Icon with stroke instead of fill -->
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" 
+              d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+    </svg>
+    <span class="text-xs mt-1 text-secondary">RTL</span>
+</button>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================= -->
+    <!-- ARTICLES PAGE CONTENT -->
+    <!-- ============================================= -->
+
+    <main class="min-h-screen pt-28 mb-24">
+
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+
+            <!-- Hero Section -->
+            <section class="articles-hero text-center fade-in">
+                <div class="relative z-10">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white mb-6">
+                        Articles & Insights
+                    </h1>
+                    <p class="text-xl text-white/90 max-w-3xl mx-auto">
+                        Expert analysis, case studies, and professional insights covering design, development, and creative innovation.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Statistics -->
+            <section class="stats-grid fade-in">
+                <div class="stat-card">
+                    <div class="stat-number">120+</div>
+                    <div class="stat-label">Published Articles</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-label">Monthly Readers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24</div>
+                    <div class="stat-label">Expert Authors</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">Categories</div>
+                </div>
+            </section>
+
+            <!-- Filter Bar -->
+            <section class="filter-bar flex flex-col md:flex-row gap-4 items-center fade-in">
+                <div class="flex-grow relative w-full">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-secondary-text rtl:right-3 rtl:left-auto"></i>
+                    <input type="text" id="search-input" placeholder="Search articles, topics, or authors..."
+                           class="filter-input w-full pl-10 rtl:pr-10 rtl:pl-4 p-3 rounded-lg bg-background text-primary-text">
+                </div>
+
+                <div class="flex gap-4 w-full md:w-auto">
+                    <select 
+    id="category-select"
+    aria-label="Filter articles by category"
+    class="filter-input p-3 rounded-lg bg-background text-primary-text w-full md:w-auto">
+    
+    <option value="all">All Categories</option>
+    <option value="Design">Design</option>
+    <option value="Development">Development</option>
+    <option value="UI/UX">UI/UX</option>
+    <option value="Branding">Branding</option>
+    <option value="Photography">Photography</option>
+</select>
+
+
+                    <select 
+    id="sort-select"
+    aria-label="Sort articles"
+    class="filter-input p-3 rounded-lg bg-background text-primary-text w-full md:w-auto">
+    
+    <option value="newest">Newest First</option>
+    <option value="oldest">Oldest First</option>
+    <option value="popular">Most Popular</option>
+</select>
+
+                </div>
+            </section>
+
+            <!-- Articles Grid -->
+            <section class="mt-8">
+                <div id="article-grid" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Articles will be rendered here by JavaScript -->
+                </div>
+
+                <div id="no-results" class="text-center py-16 hidden">
+                    <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-hover flex items-center justify-center">
+                        <i class="fa-solid fa-inbox text-4xl text-accent"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-primary-text mb-2">No articles found</h3>
+                    <p class="text-secondary-text">Try adjusting your search or filter criteria</p>
+                </div>
+            </section>
+
+            <!-- Pagination -->
+            <section class="mt-12">
+                <div id="pagination-controls" class="pagination-pro">
+                    <!-- Pagination buttons will be rendered here -->
+                </div>
+            </section>
+
+            <!-- Newsletter CTA -->
+            <section class="newsletter-cta-pro fade-in">
+                <div class="relative z-10 max-w-3xl mx-auto text-center">
+                    <h2 class="text-3xl md:text-4xl font-serif font-bold text-white mb-4">
+                        Stay Updated with Industry Insights
+                    </h2>
+                    <p class="text-white/90 mb-8">
+                        Join 50,000+ professionals who receive our weekly newsletter with exclusive articles, case studies, and expert advice.
+                    </p>
+                    <div class="flex flex-col md:flex-row gap-4 max-w-lg mx-auto">
+                        <input type="email" placeholder="Enter your email address" 
+                               class="p-4 flex-grow rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/50">
+                        <button class="btn-accent font-semibold py-4 px-8 rounded-lg text-lg bg-white text-gray-400 hover:bg-white/90 transition duration-200">
+    Subscribe Now
+</button>
+
+                    </div>
+                    <p class="text-white/70 text-sm mt-4">No spam. Unsubscribe at any time.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+ 
+    <!-- Footer -->
+   <!-- Footer -->
+    <footer id="main-footer" class="pt-14 bg-slate-900 transition-colors duration-300">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-8 pb-10 border-b border-slate-700">
+                <div class="col-span-2 md:col-span-2 lg:col-span-2">
+                    <h3 class="text-2xl sm:text-3xl font-serif font-bold mb-4 text-accent">GrowwPortfolio</h3>
+                    <p class="text-sm leading-relaxed max-w-xs text-white">
+    The premium destination for curated portfolios, in-depth case studies, and professional insights on design, development, and creative work.
+</p>
+
+                    <div class="flex space-x-4 rtl:space-x-reverse mt-6">
+                        <!-- Social Media Icons -->
+                        <a href="#" class="text-slate-400 hover:text-accent transition duration-200 hover:scale-110" aria-label="Facebook">
+                            <i class="fab fa-facebook-f w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-accent transition duration-200 hover:scale-110" aria-label="Twitter">
+                            <i class="fab fa-twitter w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-accent transition duration-200 hover:scale-110" aria-label="Instagram">
+                            <i class="fab fa-instagram w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-accent transition duration-200 hover:scale-110" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-span-1">
+                    <h4 class="text-lg font-semibold mb-4 text-blue-500">Categories</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="footer-link">Web Design</a></li>
+                        <li><a href="#" class="footer-link">UI/UX</a></li>
+                        <li><a href="#" class="footer-link">Development</a></li>
+                        <li><a href="#" class="footer-link">Branding</a></li>
+                        <li><a href="#" class="footer-link">Photography</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-span-1">
+                    <h4 class="text-lg font-semibold mb-4 text-blue-500">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="footer-link">Home</a></li>
+                        <li><a href="project-page.html" class="footer-link">Project</a></li>
+                        <li><a href="articles.html" class="footer-link">Articles</a></li>
+                        <li><a href="about.html" class="footer-link">About</a></li>
+                        <li><a href="contact.html" class="footer-link">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-span-2 md:col-span-1 mt-6 md:mt-0">
+                    <h4 class="footer-heading font-semibold text-lg mb-4">Get My Profile</h4>
+                    <p class="text-sm mb-4 text-white">
+    Sign up for exclusive portfolio insights and updates.
+</p>
+
+                    <div class="flex flex-col space-y-3">
+                        <input type="email" placeholder="Your email address" aria-label="Email for Newsletter" class="p-3 text-sm rounded-lg bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-accent focus:outline-none text-white placeholder-slate-400">
+                        <button class="btn-accent font-semibold py-3 rounded-lg hover:opacity-90 transition duration-200 shadow-lg">
+                            Subscribe
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+           <div class="py-4 text-center text-white text-xs">
+    &copy; 2025 GrowwPortfolio. All rights reserved. |
+    <span class="hover:text-accent transition duration-200 cursor-pointer">
+        Privacy Policy
+    </span> |
+    <span class="hover:text-accent transition duration-200 cursor-pointer">
+        Terms of Service
+    </span>
+</div>
+
+        </div>
+    </footer>
+    <script>
+        // Article Data
+        const ARTICLES_DATA = [
+            {
+                id: 1,
+                title: "The Future of Web Design: Minimalist Trends in 2025",
+                category: "Design",
+                date: "2025-10-20",
+                readTime: 5,
+                excerpt: "Explore how ultra-minimalism and brutalist typography are reshaping the modern web landscape and user experience.",
+                image: "/assets/future ai.jpeg  ",
+                views: 1200,
+                tags: ["minimalism", "UI/UX", "trends", "typography"],
+                author: "Alex Rivers",
+                featured: true
+            },
+            {
+                id: 2,
+                title: "Advanced CSS Grid Layout Techniques for Modern Web",
+                category: "Development",
+                date: "2025-10-18",
+                readTime: 7,
+                excerpt: "Deep dive into subgrid, layering, and responsive patterns using the latest features of modern CSS Grid spec.",
+                image: "/assets/css.webp",
+                views: 950,
+                tags: ["CSS", "frontend", "responsive", "development"],
+                author: "Jamie Lee"
+            },
+            {
+                id: 3,
+                title: "Branding Strategy for Startups: A Comprehensive Case Study",
+                category: "Branding",
+                date: "2025-10-15",
+                readTime: 10,
+                excerpt: "We break down the strategic steps taken to build a cohesive and scalable brand identity for a new tech startup.",
+                image: "/assets/brand.jpg",
+                views: 2100,
+                tags: ["strategy", "marketing", "logo", "identity"],
+                author: "Chris Nolan"
+            },
+            {
+                id: 4,
+                title: "The Rise of Motion Graphics in Modern UI/UX Design",
+                category: "UI/UX",
+                date: "2025-10-10",
+                readTime: 6,
+                excerpt: "Understand how subtle, effective motion graphics can significantly enhance user interaction and delight.",
+                image: "/assets/motion.avif",
+                views: 1500,
+                tags: ["animation", "design", "trends"],
+                author: "Taylor Smith"
+            },
+            {
+                id: 5,
+                title: "Optimizing JavaScript Performance in Modern Applications",
+                category: "Development",
+                date: "2025-10-05",
+                readTime: 8,
+                excerpt: "Practical tips and advanced techniques for profiling and boosting the speed of your client-side JavaScript applications.",
+                image: "/assets/java.jpeg",
+                views: 750,
+                tags: ["JavaScript", "performance", "optimization", "coding"],
+                author: "Jamie Lee"
+            },
+            {
+                id: 6,
+                title: "The Art of Professional Portrait Photography in Tech",
+                category: "Photography",
+                date: "2025-09-30",
+                readTime: 5,
+                excerpt: "A comprehensive guide to capturing professional team portraits that convey innovation and brand identity.",
+                image: "/assets/art.jpg",
+                views: 1800,
+                tags: ["visuals", "headshots", "lighting", "branding"],
+                author: "Alex Rivers"
+            },
+        ];
+
+        // State Management
+        let currentPage = 1;
+        const articlesPerPage = 6;
+
+        // DOM Elements
+        const gridElement = document.getElementById('article-grid');
+        const searchInput = document.getElementById('search-input');
+        const categorySelect = document.getElementById('category-select');
+        const sortSelect = document.getElementById('sort-select');
+        const paginationControls = document.getElementById('pagination-controls');
+        const noResultsMessage = document.getElementById('no-results');
+
+        // Render Article Card
+        function renderArticleCard(article, index) {
+            const isFeatured = article.featured && index === 0;
+            const cardClass = isFeatured ? 'article-card-pro featured-article lg:col-span-2' : 'article-card-pro';
+            
+            return `
+                <div class="${cardClass} fade-in" style="animation-delay: ${index * 0.1}s;">
+                    <div class="article-image-container">
+                        <img src="${article.image}" alt="${article.title}" class="article-image">
+                        <span class="category-badge">${article.category}</span>
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="article-meta-item">
+                                <i class="fa-solid fa-calendar"></i>
+                                ${new Date(article.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </span>
+                            <span class="article-meta-item">
+                                <i class="fa-solid fa-clock"></i>
+                                ${article.readTime} min read
+                            </span>
+                            <span class="article-meta-item">
+                                <i class="fa-solid fa-eye"></i>
+                                ${article.views.toLocaleString()} views
+                            </span>
+                        </div>
+                        <h3 class="article-title">
+                            <a href="article-details.html?id=${article.id}" class="hover:text-accent transition duration-200">
+                                ${article.title}
+                            </a>
+                        </h3>
+                        <p class="article-excerpt">${article.excerpt}</p>
+                        <div class="flex justify-between items-center">
+                            <div class="article-tags">
+                                ${article.tags.slice(0, 2).map(tag => `
+                                    <span class="article-tag">#${tag}</span>
+                                `).join('')}
+                                ${article.tags.length > 2 ? `<span class="article-tag">+${article.tags.length - 2}</span>` : ''}
+                            </div>
+                            <a href="article-details.html?id=${article.id}" class="text-accent hover:text-primary font-medium text-sm flex items-center gap-1">
+                                Read More <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Filter and Sort Articles
+        function filterArticles() {
+            let filtered = [...ARTICLES_DATA];
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const category = categorySelect.value;
+            const sortOrder = sortSelect.value;
+
+            // Search Filter
+            if (searchTerm) {
+                filtered = filtered.filter(article =>
+                    article.title.toLowerCase().includes(searchTerm) ||
+                    article.excerpt.toLowerCase().includes(searchTerm) ||
+                    article.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
+                    article.author.toLowerCase().includes(searchTerm)
+                );
+            }
+
+            // Category Filter
+            if (category !== 'all') {
+                filtered = filtered.filter(article => article.category === category);
+            }
+
+            // Sorting
+            if (sortOrder === 'newest') {
+                filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+            } else if (sortOrder === 'oldest') {
+                filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
+            } else if (sortOrder === 'popular') {
+                filtered.sort((a, b) => b.views - a.views);
+            }
+
+            return filtered;
+        }
+
+        // Render Articles
+        function renderArticles() {
+            const filteredArticles = filterArticles();
+            const totalPages = Math.ceil(filteredArticles.length / articlesPerPage);
+            
+            if (currentPage > totalPages) currentPage = Math.max(1, totalPages);
+            
+            const start = (currentPage - 1) * articlesPerPage;
+            const end = start + articlesPerPage;
+            const articlesToRender = filteredArticles.slice(start, end);
+
+            // Show/Hide no results message
+            noResultsMessage.classList.toggle('hidden', filteredArticles.length > 0);
+
+            // Render articles
+            if (filteredArticles.length > 0) {
+                const articlesHTML = articlesToRender.map((article, index) => renderArticleCard(article, index)).join('');
+                gridElement.innerHTML = articlesHTML;
+            } else {
+                gridElement.innerHTML = '';
+            }
+
+            renderPagination(totalPages);
+        }
+
+        // Render Pagination
+        function renderPagination(totalPages) {
+            paginationControls.innerHTML = '';
+
+            if (totalPages <= 1) return;
+
+            // Previous Button
+            const prevBtn = document.createElement('button');
+            prevBtn.className = `pagination-btn-pro ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : ''}`;
+            prevBtn.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderArticles();
+                    window.scrollTo({ top: gridElement.offsetTop - 100, behavior: 'smooth' });
+                }
+            });
+            paginationControls.appendChild(prevBtn);
+
+            // Page Numbers
+            for (let i = 1; i <= totalPages; i++) {
+                const pageBtn = document.createElement('button');
+                pageBtn.className = `pagination-btn-pro ${i === currentPage ? 'active' : ''}`;
+                pageBtn.textContent = i;
+                pageBtn.addEventListener('click', () => {
+                    currentPage = i;
+                    renderArticles();
+                    window.scrollTo({ top: gridElement.offsetTop - 100, behavior: 'smooth' });
+                });
+                paginationControls.appendChild(pageBtn);
+            }
+
+            // Next Button
+            const nextBtn = document.createElement('button');
+            nextBtn.className = `pagination-btn-pro ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : ''}`;
+            nextBtn.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderArticles();
+                    window.scrollTo({ top: gridElement.offsetTop - 100, behavior: 'smooth' });
+                }
+            });
+            paginationControls.appendChild(nextBtn);
+        }
+
+        // Initialize Articles Page
+        function initializeArticlesPage() {
+            // Set up event listeners
+            searchInput.addEventListener('input', debounce(() => {
+                currentPage = 1;
+                renderArticles();
+            }, 300));
+
+            categorySelect.addEventListener('change', () => {
+                currentPage = 1;
+                renderArticles();
+            });
+
+            sortSelect.addEventListener('change', () => {
+                currentPage = 1;
+                renderArticles();
+            });
+
+            // Initial render
+            renderArticles();
+        }
+
+        // Debounce function for search
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // --- HEADER/FOOTER FUNCTIONALITY (Same as home2.html) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const html = document.documentElement;
+
+            // 1. Theme Toggle & Persistence
+            const themeToggle = document.getElementById('theme-toggle');
+            const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+            const lightIcons = document.querySelectorAll('.light-icon');
+            const darkIcons = document.querySelectorAll('.dark-icon');
+
+            const applyTheme = (theme) => {
+                html.setAttribute('data-theme', theme);
+                lightIcons.forEach(icon => icon.classList.toggle('hidden', theme === 'dark'));
+                darkIcons.forEach(icon => icon.classList.toggle('hidden', theme === 'light'));
+            };
+
+            const initializeTheme = () => {
+                const storedTheme = localStorage.getItem('theme');
+                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                
+                const initialTheme = (storedTheme === 'dark' || (!storedTheme && systemPrefersDark)) ? 'dark' : 'light';
+                applyTheme(initialTheme);
+            };
+
+            const toggleTheme = () => {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            };
+
+            if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+            if (mobileThemeToggle) mobileThemeToggle.addEventListener('click', toggleTheme);
+            initializeTheme();
+
+            // 2. Search Overlay
+            const searchOverlay = document.getElementById('search-overlay');
+            const searchOpenBtns = [document.getElementById('search-open'), document.getElementById('mobile-search-open')].filter(Boolean);
+            const searchCloseBtn = document.getElementById('search-close');
+
+            const toggleSearch = (open) => {
+                if (open) {
+                    searchOverlay.classList.remove('hidden');
+                    setTimeout(() => searchOverlay.classList.remove('opacity-0'), 10);
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    searchOverlay.classList.add('opacity-0');
+                    searchOverlay.addEventListener('transitionend', () => {
+                        searchOverlay.classList.add('hidden');
+                        document.body.style.overflow = '';
+                    }, { once: true });
+                }
+            };
+
+            searchOpenBtns.forEach(btn => btn.addEventListener('click', () => toggleSearch(true)));
+            if (searchCloseBtn) searchCloseBtn.addEventListener('click', () => toggleSearch(false));
+            if (searchOverlay) searchOverlay.addEventListener('click', (e) => {
+                if (e.target === searchOverlay) toggleSearch(false);
+            });
+
+            // 3. Mobile Menu Bottom Sheet Drawer
+            const menuDrawer = document.getElementById('mobile-menu-drawer');
+            const menuBackdrop = document.getElementById('drawer-backdrop');
+            const menuContent = document.getElementById('drawer-content');
+            const menuOpenBtn = document.getElementById('mobile-menu-open');
+            const menuCloseBtn = document.getElementById('mobile-menu-close');
+            const mobileHomesToggle = document.getElementById('mobile-homes-toggle');
+            const mobileHomesMenu = document.getElementById('mobile-homes-menu');
+            const homesIcon = document.getElementById('homes-icon');
+            const HIDDEN_CLASS = 'translate-y-[-100%]';
+
+            const openDrawer = () => {
+                menuDrawer.classList.remove('pointer-events-none');
+                menuContent.classList.remove(HIDDEN_CLASS);
+                menuBackdrop.classList.add('opacity-50', 'pointer-events-auto');
+                document.body.style.overflow = 'hidden';
+            };
+
+            const closeDrawer = () => {
+                menuContent.classList.add(HIDDEN_CLASS);
+                menuBackdrop.classList.remove('opacity-50', 'pointer-events-auto');
+                menuContent.addEventListener('transitionend', () => {
+                    menuDrawer.classList.add('pointer-events-none');
+                    document.body.style.overflow = '';
+                }, { once: true });
+            };
+
+            if (menuOpenBtn) menuOpenBtn.addEventListener('click', openDrawer);
+            if (menuCloseBtn) menuCloseBtn.addEventListener('click', closeDrawer);
+            if (menuBackdrop) menuBackdrop.addEventListener('click', closeDrawer);
+
+            // Mobile Dropdown Toggle - Homes
+            if (mobileHomesToggle) mobileHomesToggle.addEventListener('click', () => {
+                mobileHomesMenu.classList.toggle('hidden');
+                homesIcon.classList.toggle('rotate-180');
+            });
+
+            // Mobile Dropdown Toggle - Dashboard
+            const mobileDashboardToggle = document.getElementById('mobile-dashboard-toggle');
+            const mobileDashboardMenu = document.getElementById('mobile-dashboard-menu');
+            const dashboardIcon = document.getElementById('dashboard-icon');
+
+            if (mobileDashboardToggle) {
+                mobileDashboardToggle.addEventListener('click', () => {
+                    mobileDashboardMenu.classList.toggle('hidden');
+                    dashboardIcon.classList.toggle('rotate-180');
+                });
+            }
+
+            // 4. Global Language Toggle (Globe Icon)
+            const langButton = document.getElementById('lang-icon');
+
+            const toggleLanguage = () => {
+                const currentLang = localStorage.getItem('language') || 'en';
+                const newLang = currentLang === 'en' ? 'ar' : 'en';
+
+                localStorage.setItem('language', newLang);
+
+                document.documentElement.setAttribute(
+                    'dir',
+                    newLang === 'ar' ? 'rtl' : 'ltr'
+                );
+            };
+
+            if (langButton) langButton.addEventListener('click', toggleLanguage);
+
+            const savedLang = localStorage.getItem('language') || 'en';
+            document.documentElement.setAttribute('dir', savedLang === 'ar' ? 'rtl' : 'ltr');
+            
+            const mobileLangButton = document.getElementById('mobile-lang-icon');
+            if (mobileLangButton) {
+                mobileLangButton.addEventListener('click', toggleLanguage);
+            }
+
+            // 5. Improved Dropdown Behavior
+            const dropdownWrappers = document.querySelectorAll('.dropdown-wrapper');
+            let hideTimeout;
+            
+            dropdownWrappers.forEach(wrapper => {
+                const dropdownMenu = wrapper.querySelector('.dropdown-menu');
+                
+                wrapper.addEventListener('mouseenter', () => {
+                    clearTimeout(hideTimeout);
+                    dropdownMenu.style.opacity = '1';
+                    dropdownMenu.style.visibility = 'visible';
+                    dropdownMenu.style.transform = 'translateY(0)';
+                });
+                
+                wrapper.addEventListener('mouseleave', () => {
+                    hideTimeout = setTimeout(() => {
+                        dropdownMenu.style.opacity = '0';
+                        dropdownMenu.style.visibility = 'hidden';
+                        dropdownMenu.style.transform = 'translateY(-10px)';
+                    }, 300);
+                });
+                
+                if (dropdownMenu) {
+                    dropdownMenu.addEventListener('mouseenter', () => {
+                        clearTimeout(hideTimeout);
+                    });
+                    
+                    dropdownMenu.addEventListener('mouseleave', () => {
+                        hideTimeout = setTimeout(() => {
+                            dropdownMenu.style.opacity = '0';
+                            dropdownMenu.style.visibility = 'hidden';
+                            dropdownMenu.style.transform = 'translateY(-10px)';
+                        }, 200);
+                    });
+                }
+            });
+
+            // 6. Close dropdowns when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.dropdown-wrapper')) {
+                    document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                        menu.style.opacity = '0';
+                        menu.style.visibility = 'hidden';
+                        menu.style.transform = 'translateY(-10px)';
+                    });
+                }
+            });
+
+            // Initialize Articles Page
+            initializeArticlesPage();
+        });
+    </script>
+</body>
+</html>

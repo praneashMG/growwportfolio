@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./assets/growwpark_logo.jpg" type="image/jpeg">
+    <title>Growwpark Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- CSS Variables for Dynamic Colors --- */
+        :root, html[data-theme='light'] {
+            --color-background: #F3F4F6;
+            --color-primary-text: #1E293B;
+            --color-secondary-text: #475569;
+            --color-accent: #3B82F6;
+            --color-primary: #1E3A8A;
+            --color-secondary: #0EA5E9;
+            --color-border: #E2E8F0;
+            --color-hover: #E0F2FE;
+            --color-footer-bg: #1E293B;
+            --color-footer-text: #F1F5F9;
+            --color-card-bg: #FFFFFF;
+            --color-gradient-start: #F0F9FF;
+            --color-gradient-end: #EFF6FF;
+            --color-overlay: rgba(255, 255, 255, 0.8);
+        }
+        html[data-theme='dark'] {
+            --color-background: #0F172A;
+            --color-primary-text: #F8FAFC;
+            --color-secondary-text: #CBD5E1;
+            --color-accent: #3B82F6;
+            --color-primary: #60A5FA;
+            --color-secondary: #38BDF8;
+            --color-border: #334155;
+            --color-hover: #1E293B;
+            --color-footer-bg: #020617;
+            --color-footer-text: #E2E8F0;
+            --color-card-bg: #1E293B;
+            --color-gradient-start: #0C4A6E;
+            --color-gradient-end: #1E3A8A;
+            --color-overlay: rgba(15, 23, 42, 0.8);
+        }
+        
+        /* Apply Variables and Base Font */
+        body {
+            background-color: var(--color-background);
+            color: var(--color-primary-text);
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        /* Utility Class Aliases */
+        .text-primary-text { color: var(--color-primary-text); }
+        .text-secondary-text { color: var(--color-secondary-text); }
+        .text-accent { color: var(--color-accent); }
+        .text-primary { color: var(--color-primary); }
+        .text-secondary { color: var(--color-secondary); }
+        .bg-background { background-color: var(--color-background); }
+        .bg-hover { background-color: var(--color-hover); }
+        .border-border { border-color: var(--color-border); }
+        .bg-card { background-color: var(--color-card-bg); }
+        
+        /* Header Accent Color */
+        .header-accent {
+            color: var(--color-primary);
+        }
+        
+        #main-header nav {
+            background: var(--color-card-bg);
+            border-radius: 9999px;
+            padding: 10px 25px;
+            margin: 15px auto;
+            max-width: 1200px;
+            box-shadow: 0 10px 25px rgba(30, 58, 138, 0.15);
+        }
+
+        /* Footer Specific Overrides */
+        #main-footer {
+            background-color: var(--color-footer-bg);
+            color: var(--color-footer-text);
+        }
+        
+        #main-footer .footer-heading {
+            color: var(--color-footer-text);
+        }
+        
+        #main-footer .footer-link {
+            color: #ffffff;
+            transition: color 0.2s;
+        }
+        
+        #main-footer .footer-link:hover {
+            color: var(--color-accent);
+        }
+
+        /* Nav Link Underline Animation */
+        .nav-link {
+            position: relative;
+            transition: color 0.3s;
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 2px;
+            background-color: var(--color-accent);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+        
+        .nav-link:hover::after, .nav-link.active::after {
+            transform: scaleX(1);
+        }
+
+        /* Glow Effects */
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+        }
+        
+        .glow-on-hover:hover {
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.3);
+        }
+
+        /* FIXED DROPDOWN WITH BUFFER ZONE */
+        .dropdown-wrapper {
+            position: relative;
+        }
+
+        /* Create invisible buffer zone above dropdown */
+        .dropdown-wrapper::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 20px;
+            bottom: 100%;
+            z-index: 100;
+            background: transparent;
+        }
+        
+        /* Dropdown Menu Styling */
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 5px);
+            left: 0;
+            background-color: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px rgba(30, 58, 138, 0.15);
+            min-width: 200px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        /* Open state for dropdown */
+        .dropdown-wrapper.open .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        /* Dropdown items */
+        .dropdown-menu a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--color-primary-text);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        .dropdown-menu a:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-menu a:hover {
+            background-color: var(--color-hover);
+            color: var(--color-accent);
+            padding-left: 1.25rem;
+        }
+        
+        /* Rotate arrow when open */
+        .dropdown-wrapper.open .dropdown-toggle svg {
+            transform: rotate(180deg);
+        }
+        
+   @media (max-width: 1023px) {
+    .dropdown-wrapper::before {
+        display: none;
+    }
+
+    .dropdown-menu {
+        position: static;
+        margin-top: 0.5rem;
+        box-shadow: none;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+        display: none;
+    }
+
+    .dropdown-wrapper:hover .dropdown-menu {
+        display: block;
+    }
+}
+
+        /* Custom Styles for Premium Layout Sections */
+        .section-heading {
+            font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+            color: var(--color-primary-text);
+            font-size: 1.875rem;
+            font-weight: 700;
+        }
+        
+        /* NEW: Image and Background Enhancements */
+        .hero-background {
+            background-image: linear-gradient(to right, rgba(59, 130, 246, 0.2), rgba(14, 165, 233, 0.2)), url('/assets/c1.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+        
+        .contact-background-pattern {
+            background-image: radial-gradient(var(--color-border) 1px, transparent 2px);
+            background-size: 40px 40px;
+        }
+        
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-accent), var(--color-secondary));
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .floating-shape-1 {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            right: 5%;
+        }
+        
+        .floating-shape-2 {
+            width: 200px;
+            height: 200px;
+            bottom: 20%;
+            left: 5%;
+        }
+        
+        .image-frame {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.5s ease;
+        }
+        
+        .image-frame:hover {
+            transform: scale(1.03);
+        }
+        
+        .team-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .team-image:hover {
+            transform: scale(1.1);
+        }
+        
+        .team-card {
+            text-align: center;
+            padding: 0;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+            transition: all 0.35s ease;
+        }
+        
+        .team-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .team-image-wrapper {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 1.25rem;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .team-image-wrapper:hover {
+            transform: scale(1.07);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+        }
+        
+        .team-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.35s ease;
+        }
+        
+        .team-image-wrapper:hover .team-image {
+            transform: scale(1.12);
+        }
+        
+        .team-role {
+            color: var(--color-accent);
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+        
+        .team-bio {
+            color: var(--color-secondary-text);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        
+        .contact-image-overlay {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+        }
+        
+        .contact-image-overlay::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent, var(--color-overlay));
+        }
+        
+        .contact-image-overlay img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .contact-image-overlay:hover img {
+            transform: scale(1.05);
+        }
+        
+        .icon-grid-bg {
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 20%);
+        }
+        
+        .floating-icon {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+        
+        /* Contact Page Specific Styles */
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--color-gradient-start) 0%, var(--color-gradient-end) 100%);
+        }
+        
+        .contact-card {
+            background-color: var(--color-card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid var(--color-border);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-accent), var(--color-secondary));
+            z-index: 2;
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .icon-circle {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%);
+            color: white;
+            font-size: 1.75rem;
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--color-border);
+            background-color: var(--color-card-bg);
+            color: var(--color-primary-text);
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        
+        .social-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-card-bg);
+            color: var(--color-primary-text);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid var(--color-border);
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-5px) scale(1.1);
+            background-color: var(--color-accent);
+            color: white;
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 0.875rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+            z-index: -1;
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--color-accent);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .btn-accent {
+            background-color: var(--color-accent);
+            color: white;
+            padding: 0.875rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn-accent::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+            z-index: -1;
+        }
+        
+        .btn-accent:hover::before {
+            left: 100%;
+        }
+        
+        .btn-accent:hover {
+            background-color: var(--color-secondary);
+            box-shadow: 0 10px 20px rgba(14, 165, 233, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .map-container {
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--color-border);
+        }
+        
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, var(--color-border) 50%, transparent 100%);
+            margin: 3rem 0;
+        }
+        
+        /* Light Theme – text uses primary-text (dark blue) */
+        .map-heading,
+        .map-address {
+            color: var(--color-primary-text);
+        }
+        
+        .map-iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Dark Theme – text becomes accent blue */
+        html[data-theme="dark"] .map-heading,
+        html[data-theme="dark"] .map-address {
+            color: var(--color-accent);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        .animate-delay-1 {
+            animation-delay: 0.1s;
+        }
+        
+        .animate-delay-2 {
+            animation-delay: 0.2s;
+        }
+        
+        .animate-delay-3 {
+            animation-delay: 0.3s;
+        }
+        
+        .animate-delay-4 {
+            animation-delay: 0.4s;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .contact-card {
+                padding: 1.5rem;
+            }
+            
+            .icon-circle {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+            
+            .social-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+            }
+            
+            .hero-background {
+                background-attachment: scroll;
+            }
+            
+            .floating-shape {
+                display: none;
+            }
+        }
+        
+        /* Smooth animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-down {
+            animation: fadeInDown 0.3s ease forwards;
+        }
+
+        /* RTL Specific Adjustments */
+        [dir="rtl"] #mobile-menu-drawer .flex-col.items-center {
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body class="antialiased">
+   <header class="fixed top-0 left-0 w-full z-50 transition-colors duration-300" id="main-header">
+        <nav class="mx-auto max-w-[1200px] px-4 sm:px-3 lg:px-4 py-3 flex items-center justify-between h-16 bg-white rounded-full shadow-xl border border-border">
+            <a href="index.html" class="text-2xl sm:text-3xl font-serif font-extrabold tracking-wide">
+                <span class="header-accent">Groww</span><span class="text-accent">Portfolio</span>
+            </a>
+
+            <div class="hidden lg:flex items-center space-x-6">
+                <div class="flex space-x-6 rtl:space-x-reverse rtl:ml-6 text-primary-text font-medium">
+                    
+                    <!-- FIXED DROPDOWN STRUCTURE -->
+                    <div class="dropdown-wrapper">
+                        <button class="nav-link flex items-center text-primary-text dropdown-toggle">
+                            Home
+                            <svg class="w-3 h-3 ml-1 relative top-[2.5px] transition-transform duration-200 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        
+                        <div class="dropdown-menu">
+                            <a href="index.html" class="flex items-center gap-2 px-4 py-3 hover:bg-hover text-sm text-primary-text transition duration-150">
+                                <i class="fa-solid fa-house text-accent"></i>
+                                Home 1
+                            </a>
+                            <a href="home2.html" class="flex items-center gap-2 px-4 py-3 hover:bg-hover text-sm text-primary-text transition duration-150">
+                                <i class="fa-solid fa-house text-accent"></i>
+                                Home 2
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <a href="project-page.html" class="nav-link">Project</a>
+                    <a href="articles.html" class="nav-link">Articles</a>
+                    <a href="about.html" class="nav-link">About</a>
+                    <a href="contact.html" class="nav-link active">Contact</a>
+                </div>
+                
+                <div class="w-px h-6 bg-border mx-3"></div>
+                
+                                <div class="flex items-center space-x-4 rtl:space-x-reverse rtl:mr-4">
+<!-- 🔽 RESUME DOWNLOAD (DESKTOP FIX) -->
+    <a href="assets/Resume.pdf"
+       download="Alex_Morgan_Resume.pdf"
+       class="icon-btn text-primary hover:text-accent p-1.5 rounded-full transition duration-200 glow-on-hover"
+       title="Download Resume"
+       aria-label="Download Resume">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+    </a>                    <button id="search-open" class="icon-btn text-primary hover:text-accent p-1.5 rounded-full transition duration-200 glow-on-hover" aria-label="Open Search" title="Open Search">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </button>
+                    
+                    <button id="theme-toggle" class="icon-btn text-primary hover:text-accent p-1.5 rounded-full transition duration-200 glow-on-hover" aria-label="Toggle Theme" title="Toggle Theme">
+                        <svg class="w-6 h-6 light-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg class="w-6 h-6 dark-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
+                    
+                    <button id="lang-icon" 
+                        class="text-primary hover:text-accent p-1.5 rounded-full transition duration-200 glow-on-hover"
+                        title="Change Language"
+                        aria-label="Change Language"
+                    >
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                d="M12 3a9 9 0 100 18 9 9 0 000-18zm0 0c2.5 2.8 2.5 12.2 0 15m0-15c-2.5 2.8-2.5 12.2 0 15M3 12h18" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex items-center lg:hidden space-x-4 rtl:space-x-reverse rtl:ml-4">
+                <button id="mobile-theme-toggle" class="text-primary hover:text-accent p-1.5 rounded-full transition duration-200" aria-label="Toggle Theme" title="Toggle Theme">
+                    <svg class="w-6 h-6 light-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+
+                    <svg class="w-6 h-6 dark-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                </button>
+                
+                <button id="mobile-menu-open" class="icon-btn text-primary hover:text-accent p-1.5 rounded-full transition duration-200" aria-label="Open Menu" title="Open Menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Search Overlay -->
+    <div id="search-overlay" class="fixed inset-0 z-[100] bg-background bg-opacity-95 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="container mx-auto px-4 py-16">
+            <button id="search-close" 
+                class="absolute top-4 right-4 text-primary hover:text-accent p-2" 
+                aria-label="Close Search" 
+                title="Close Search"> 
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h2 class="text-3xl font-serif mb-8 text-primary">What are you looking for?</h2>
+            <input type="text" placeholder="Start typing..." class="w-full text-4xl p-4 bg-transparent border-b-2 border-border focus:outline-none focus:border-accent text-primary-text" autofocus>
+            <div class="mt-8 text-secondary">Popular searches: **Technology**, **Style**, **Policy**</div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Drawer -->
+    <div id="mobile-menu-drawer" class="fixed inset-0 z-50 pointer-events-none transition-all duration-300">
+        <div id="drawer-backdrop" class="absolute inset-0 bg-black opacity-0 transition-opacity duration-300 pointer-events-none"></div>
+
+        <div id="drawer-content" class="absolute top-0 left-0 right-0 bg-background rounded-b-2xl shadow-2xl p-6 lg:hidden max-h-[80vh] overflow-y-auto transform translate-y-[-100%] transition-transform duration-300 ease-out">
+            
+            <div class="flex justify-between items-center pb-4 border-b border-border">
+                <h3 class="text-xl font-serif font-bold text-accent">Menu</h3>
+                <button id="mobile-menu-close" class="text-primary hover:text-accent p-1.5 rounded-full transition duration-200" aria-label="Close Menu" title="Close Menu">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+
+            <nav class="flex flex-col space-y-2 py-4">
+                <div>
+                    <button class="block text-primary font-semibold text-lg hover:text-accent transition duration-200 py-2 w-full text-left flex justify-between items-center" id="mobile-homes-toggle">
+                        Home <svg class="w-4 h-4 transform transition-transform duration-200 text-primary" id="homes-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div id="mobile-homes-menu" class="hidden pl-4 flex flex-col space-y-1 mt-1 border-l-2 border-border rtl:pl-0 rtl:pr-4 rtl:border-l-0 rtl:border-r-2">
+                        <a href="index.html" class="block text-secondary hover:text-accent transition duration-200 text-base py-1 px-2">Home 1</a>
+                        <a href="home2.html" class="block text-secondary hover:text-accent transition duration-200 text-base py-1 px-2">Home 2</a>
+                    </div>
+                </div>
+                <a href="project-page.html" class="block text-primary font-semibold text-lg hover:text-accent transition duration-200 py-2">Project</a>
+                <a href="articles.html" class="block text-primary font-semibold text-lg hover:text-accent transition duration-200 py-2">Articles</a>
+                <a href="about.html" class="block text-primary font-semibold text-lg hover:text-accent transition duration-200 py-2">About</a>
+                <a href="contact.html" class="block text-primary font-semibold text-lg hover:text-accent transition duration-200 py-2">Contact</a>
+            </nav>
+
+            <div class="bottom-icons pt-4 border-t border-border mt-4 flex justify-around items-center space-x-4 rtl:space-x-reverse">
+                <a href="assets/Resume.pdf" 
+                   download="Alex_Morgan_Resume.pdf" 
+                   class="icon-btn flex flex-col items-center text-primary hover:text-accent p-2 transition duration-200" 
+                   title="Download Resume">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <span class="text-xs mt-1 text-secondary">Resume</span>
+                </a>
+              
+                <button id="mobile-lang-icon"
+                    class="icon-btn flex flex-col items-center text-primary hover:text-accent p-2 transition duration-200"
+                    title="Toggle RTL/LTR Direction">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" 
+                              d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                    </svg>
+                    <span class="text-xs mt-1 text-secondary">RTL</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Contact Page Content -->
+    <main class="pt-0">
+        <!-- 1. Contact Hero Section -->
+        <section class="hero-background pt-28 md:pt-32 pb-10 md:pb-16 relative overflow-hidden">
+            <div class="floating-shape floating-shape-1"></div>
+            <div class="floating-shape floating-shape-2"></div>
+            
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="max-w-4xl mx-auto text-center animate-fade-in-up">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-6 text-white leading-tight">
+                        Let's Create Something <span class="text-accent">Amazing.</span>
+                    </h1>
+                    <p class="text-xl text-white mb-10 max-w-2xl mx-auto">
+                        Have a project in mind? Let's collaborate and create something amazing. Our team is ready to bring your vision to life.
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <button class="btn-primary animate-delay-1 pulse-animation">
+                            Start a Project
+                        </button>
+                        <button class="btn-accent animate-delay-2">
+                            <i class="fas fa-video mr-2"></i> Schedule a Call
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Contact Info Section -->
+        <section class="py-16 bg-background relative contact-background-pattern">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 animate-fade-in-up">
+                    <h2 class="section-heading text-3xl md:text-4xl mb-4">Get In Touch</h2>
+                    <p class="text-secondary-text max-w-2xl mx-auto">We're here to help. Reach out through any of these channels.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Email -->
+                    <div class="contact-card animate-fade-in-up animate-delay-1">
+                        <div class="icon-circle floating-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-primary-text">Email Us</h3>
+                        <p class="text-secondary-text mb-4">For general inquiries and project discussions.</p>
+                        <a href="mailto:hello@Growwportfolio.com" class="text-accent font-semibold hover:text-primary transition duration-200">hello@Growwportfolio.com</a>
+                    </div>
+                    
+                    <!-- Phone -->
+                    <div class="contact-card animate-fade-in-up animate-delay-2">
+                        <div class="icon-circle floating-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-primary-text">Call Us</h3>
+                        <p class="text-secondary-text mb-4">Mon-Fri, 9am-6pm EST. We're happy to chat.</p>
+                        <a href="tel:+11234567890" class="text-accent font-semibold hover:text-primary transition duration-200">+1 (123) 456-7890</a>
+                    </div>
+                    
+                    <!-- Address -->
+                    <div class="contact-card animate-fade-in-up animate-delay-3">
+                        <div class="icon-circle floating-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-primary-text">Visit Us</h3>
+                        <p class="text-secondary-text mb-4">Drop by our studio for a face-to-face chat.</p>
+                        <p class="text-accent font-semibold">123 Creative Ave, Suite 500<br>New York, NY 10001</p>
+                    </div>
+                    
+                    <!-- Hours -->
+                    <div class="contact-card animate-fade-in-up animate-delay-4">
+                        <div class="icon-circle floating-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2 text-primary-text">Business Hours</h3>
+                        <p class="text-secondary-text mb-4">Our team is available during these hours.</p>
+                        <p class="text-accent font-semibold">Monday - Friday<br>9:00 AM - 6:00 PM EST</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Contact Form Section -->
+        <section class="py-16 bg-card relative">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-6xl mx-auto">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
+                        <div class="lg:col-span-2 animate-fade-in-up">
+                            <div class="contact-card">
+                                <h2 class="section-heading text-3xl md:text-4xl mb-6">Send Us a Message</h2>
+                                <p class="text-secondary-text mb-6">
+                                    Have a specific project in mind? Fill out the form and our team will get back to you within 24 hours.
+                                </p>
+                                <form id="contact-form" class="space-y-6">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div>
+                                            <label for="name" class="block text-sm font-medium text-primary-text mb-2">Full Name</label>
+                                            <input type="text" id="name" class="form-input" placeholder="John Doe" required>
+                                        </div>
+                                        
+                                        <div>
+                                            <label for="email" class="block text-sm font-medium text-primary-text mb-2">Email Address</label>
+                                            <input type="email" id="email" class="form-input" placeholder="john@example.com" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="subject" class="block text-sm font-medium text-primary-text mb-2">Subject</label>
+                                        <input type="text" id="subject" class="form-input" placeholder="Project Inquiry" required>
+                                    </div>
+                                    
+                                    <div>
+                                        <label for="message" class="block text-sm font-medium text-primary-text mb-2">Message</label>
+                                        <textarea id="message" rows="5" class="form-input" placeholder="Tell us about your project..." required></textarea>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn-primary w-full">
+                                        <i class="fas fa-paper-plane mr-2"></i> Send Message
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        <div class="animate-fade-in-up animate-delay-2">
+                            <div class="contact-image-overlay relative h-56 sm:h-64 md:h-72 lg:h-full">
+                                <img src="/assets/c2.jpeg" 
+                                     alt="Team Collaboration"
+                                     class="w-full h-full object-cover">
+                                <div class="absolute bottom-0 left-0 right-0 p-6 z-10">
+                                    <h3 class="text-xl font-bold text-white mb-2">Meet Our Team</h3>
+                                    <p class="text-white text-opacity-90">
+                                        We're passionate about creating amazing digital experiences.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Team Section -->
+        <section class="py-16 bg-background">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 animate-fade-in-up">
+                    <h2 class="section-heading text-3xl md:text-4xl mb-4">My Skills</h2>
+                    <p class="text-secondary-text max-w-2xl mx-auto">My skills are crafted to turn your ideas into high-quality digital products.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                    <!-- Member 1 -->
+                    <div class="team-card">
+                        <div class="team-image-wrapper">
+                            <img src="/assets/z1.jpg" class="team-image" alt="Web Development Skill Illustration">
+                        </div>
+                        <h3 class="text-xl font-bold text-primary-text">Web Development</h3>
+                        <p class="team-role">Frontend Specialist</p>
+                        <p class="team-bio">React, Vite, Tailwind, JavaScript, Responsive UI</p>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-image-wrapper">
+                            <img src="/assets/z3.webp" class="team-image" alt="Backend and API Development">
+                        </div>
+                        <h3 class="text-xl font-bold text-primary-text">Backend & APIs</h3>
+                        <p class="team-role">Node.js / PHP</p>
+                        <p class="team-bio">MongoDB, REST API, Routing, Authentication</p>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-image-wrapper">
+                            <img src="/assets/z4.png" class="team-image" alt="Machine Learning and AI Models">
+                        </div>
+                        <h3 class="text-xl font-bold text-primary-text">Machine Learning</h3>
+                        <p class="team-role">AI Research</p>
+                        <p class="team-bio">Stacking Models, XGBoost, RandomForest, SVR</p>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-image-wrapper">
+                            <img src="/assets/z5.jpg" class="team-image" alt="UI UX and Branding Design">
+                        </div>
+                        <h3 class="text-xl font-bold text-primary-text">UI/UX & Branding</h3>
+                        <p class="team-role">Design Systems</p>
+                        <p class="team-bio">Wireframes, Prototyping, Component Design</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Map Section -->
+        <section class="py-16 bg-card relative">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 animate-fade-in-up">
+                    <h2 class="section-heading text-3xl md:text-4xl mb-4">Find Me</h2>
+                    <p class="text-secondary-text max-w-2xl mx-auto">Visit our creative space in the heart of New York City.</p>
+                </div>
+                
+                <div class="max-w-6xl mx-auto map-container animate-fade-in-up animate-delay-1">
+                    <div class="h-96 w-full relative overflow-hidden">
+                        <!-- Google Map Embed -->
+                        <iframe
+                            title="Google Map showing Empire State Building location"
+                            class="map-iframe"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3021.83388939509!2d-73.99249988459384!3d40.74881707932726!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259af18b37e4f%3A0xdaa9d89f0f6ba0c1!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1700000000000"
+                            loading="lazy"
+                            allowfullscreen>
+                        </iframe>
+
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="text-center p-8 max-w-lg">
+                                <div class="icon-circle mx-auto mb-6 floating-icon">
+                                    <i class="fas fa-map-marked-alt"></i>
+                                </div>
+
+                                <h3 class="map-heading text-3xl font-bold mb-4">
+                                    Get Location
+                                </h3>
+
+                                <button class="btn-accent text-lg px-8 py-3">
+                                    <i class="fas fa-directions mr-2"></i> Get Directions
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Social Media Grid -->
+        <section class="py-16 bg-background icon-grid-bg relative">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 animate-fade-in-up">
+                    <h2 class="section-heading text-3xl md:text-4xl mb-4">Connect With Us</h2>
+                    <p class="text-secondary-text max-w-2xl mx-auto">Follow us on social media for updates, inspiration, and behind-the-scenes content.</p>
+                </div>
+                
+                <div class="max-w-4xl mx-auto">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                        <!-- Facebook -->
+                        <a href="#" class="social-icon-wrapper animate-fade-in-up animate-delay-1">
+                            <div class="social-icon mx-auto floating-icon">
+                                <i class="fab fa-facebook-f"></i>
+                            </div>
+                            <div class="text-center mt-4">
+                                <h4 class="font-bold text-primary-text">Facebook</h4>
+                                <p class="text-secondary-text text-sm mt-1">@Growwportfolio</p>
+                            </div>
+                        </a>
+                        
+                        <!-- Twitter -->
+                        <a href="#" class="social-icon-wrapper animate-fade-in-up animate-delay-2">
+                            <div class="social-icon mx-auto floating-icon">
+                                <i class="fab fa-twitter"></i>
+                            </div>
+                            <div class="text-center mt-4">
+                                <h4 class="font-bold text-primary-text">Twitter</h4>
+                                <p class="text-secondary-text text-sm mt-1">@GrowwportfolioHQ</p>
+                            </div>
+                        </a>
+                        
+                        <!-- Instagram -->
+                        <a href="#" class="social-icon-wrapper animate-fade-in-up animate-delay-3">
+                            <div class="social-icon mx-auto floating-icon">
+                                <i class="fab fa-instagram"></i>
+                            </div>
+                            <div class="text-center mt-4">
+                                <h4 class="font-bold text-primary-text">Instagram</h4>
+                                <p class="text-secondary-text text-sm mt-1">@Growwportfolio</p>
+                            </div>
+                        </a>
+                        
+                        <!-- LinkedIn -->
+                        <a href="#" class="social-icon-wrapper animate-fade-in-up animate-delay-4">
+                            <div class="social-icon mx-auto floating-icon">
+                                <i class="fab fa-linkedin-in"></i>
+                            </div>
+                            <div class="text-center mt-4">
+                                <h4 class="font-bold text-primary-text">LinkedIn</h4>
+                                <p class="text-secondary-text text-sm mt-1">Growwportfolio</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. Final CTA Section -->
+        <section class="py-16 gradient-bg relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10">
+                <div class="absolute top-0 left-0 w-64 h-64 bg-accent rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+                <div class="absolute bottom-0 right-0 w-96 h-96 bg-secondary rounded-full translate-x-1/2 translate-y-1/2"></div>
+            </div>
+            
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="max-w-4xl mx-auto text-center animate-fade-in-up">
+                    <h2 class="text-3xl md:text-4xl font-serif font-bold mb-6 text-primary-text">
+                        Ready to Bring Your Vision to Life?
+                    </h2>
+                    <p class="text-xl text-secondary-text mb-10 max-w-2xl mx-auto">
+                        Let's create something extraordinary together. Our team of experts is waiting to hear about your project.
+                    </p>
+                    
+                    <div class="flex flex-wrap justify-center gap-6">
+                        <button class="btn-primary px-8 py-4 text-lg">
+                            <i class="fas fa-paper-plane mr-2"></i> Send Message
+                        </button>
+                        <button class="btn-accent px-8 py-4 text-lg">
+                            <i class="fas fa-calendar-alt mr-2"></i> Schedule a Call
+                        </button>
+                    </div>
+                    
+                    <p class="mt-8 text-secondary-text text-sm">
+                        Or call us directly at <a href="tel:+11234567890" class="text-accent font-semibold hover:text-primary transition duration-200">+1 (123) 456-7890</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main> 
+    
+  <!-- Footer -->
+    <footer id="main-footer" class="pt-14 bg-slate-900 transition-colors duration-300">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-8 pb-10 border-b border-slate-700">
+                <div class="col-span-2 md:col-span-2 lg:col-span-2">
+                    <h3 class="text-2xl sm:text-3xl font-serif font-bold mb-4 text-accent">GrowwPortfolio</h3>
+                    <p class="text-sm leading-relaxed max-w-xs text-white">
+    The premium destination for curated portfolios, in-depth case studies, and professional insights on design, development, and creative work.
+</p>
+
+                    <div class="flex space-x-4 rtl:space-x-reverse mt-6">
+                        <!-- Social Media Icons -->
+                        <a href="#" class="text-slate-400 hover:text-accent transition duration-200 hover:scale-110" aria-label="Facebook">
+                            <i class="fab fa-facebook-f w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-accent transition duration-200 hover:scale-110" aria-label="Twitter">
+                            <i class="fab fa-twitter w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-accent transition duration-200 hover:scale-110" aria-label="Instagram">
+                            <i class="fab fa-instagram w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-slate-400 hover:text-accent transition duration-200 hover:scale-110" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-span-1">
+                    <h4 class="text-lg font-semibold mb-4 text-blue-500">Categories</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="footer-link">Web Design</a></li>
+                        <li><a href="#" class="footer-link">UI/UX</a></li>
+                        <li><a href="#" class="footer-link">Development</a></li>
+                        <li><a href="#" class="footer-link">Branding</a></li>
+                        <li><a href="#" class="footer-link">Photography</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-span-1">
+                    <h4 class="text-lg font-semibold mb-4 text-blue-500">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="footer-link">Home</a></li>
+                        <li><a href="project-page.html" class="footer-link">Project</a></li>
+                        <li><a href="articles.html" class="footer-link">Articles</a></li>
+                        <li><a href="about.html" class="footer-link">About</a></li>
+                        <li><a href="contact.html" class="footer-link">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-span-2 md:col-span-1 mt-6 md:mt-0">
+                    <h4 class="footer-heading font-semibold text-lg mb-4">Get My Profile</h4>
+                    <p class="text-sm mb-4 text-white">
+    Sign up for exclusive portfolio insights and updates.
+</p>
+
+                    <div class="flex flex-col space-y-3">
+                        <input type="email" placeholder="Your email address" aria-label="Email for Newsletter" class="p-3 text-sm rounded-lg bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-accent focus:outline-none text-white placeholder-slate-400">
+                        <button class="btn-accent font-semibold py-3 rounded-lg hover:opacity-90 transition duration-200 shadow-lg">
+                            Subscribe
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+           <div class="py-4 text-center text-white text-xs">
+    &copy; 2025 GrowwPortfolio. All rights reserved. |
+    <span class="hover:text-accent transition duration-200 cursor-pointer">
+        Privacy Policy
+    </span> |
+    <span class="hover:text-accent transition duration-200 cursor-pointer">
+        Terms of Service
+    </span>
+</div>
+
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const html = document.documentElement;
+
+            // --- 1. Theme Toggle & Persistence ---
+            const themeToggle = document.getElementById('theme-toggle');
+            const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
+            const lightIcons = document.querySelectorAll('.light-icon');
+            const darkIcons = document.querySelectorAll('.dark-icon');
+
+            const applyTheme = (theme) => {
+                html.setAttribute('data-theme', theme);
+                lightIcons.forEach(icon => icon.classList.toggle('hidden', theme === 'dark'));
+                darkIcons.forEach(icon => icon.classList.toggle('hidden', theme === 'light'));
+            };
+
+            const initializeTheme = () => {
+                const storedTheme = localStorage.getItem('theme');
+                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                
+                const initialTheme = (storedTheme === 'dark' || (!storedTheme && systemPrefersDark)) ? 'dark' : 'light';
+                applyTheme(initialTheme);
+            };
+
+            const toggleTheme = () => {
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            };
+
+            if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
+            if (mobileThemeToggle) mobileThemeToggle.addEventListener('click', toggleTheme);
+            initializeTheme();
+
+            // --- 2. NAVBAR DROPDOWN FUNCTIONALITY ---
+            const dropdowns = document.querySelectorAll(".dropdown-wrapper");
+            
+            dropdowns.forEach(dropdown => {
+                const button = dropdown.querySelector(".dropdown-toggle");
+                
+                // Desktop hover
+                dropdown.addEventListener("mouseenter", () => {
+                    if (window.innerWidth >= 1024) dropdown.classList.add("open");
+                });
+                
+                dropdown.addEventListener("mouseleave", () => {
+                    if (window.innerWidth >= 1024) dropdown.classList.remove("open");
+                });
+                
+                // Mobile click
+                if (button) {
+                    button.addEventListener("click", e => {
+                        if (window.innerWidth < 1024) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            dropdown.classList.toggle("open");
+                        }
+                    });
+                }
+            });
+            
+            // Click outside to close dropdowns
+            document.addEventListener("click", e => {
+                dropdowns.forEach(dropdown => {
+                    if (!dropdown.contains(e.target)) {
+                        dropdown.classList.remove("open");
+                    }
+                });
+            });
+            
+            // Close dropdowns on window resize
+            window.addEventListener("resize", () => {
+                dropdowns.forEach(dropdown => {
+                    dropdown.classList.remove("open");
+                });
+            });
+
+            // --- 3. Search Overlay ---
+            const searchOverlay = document.getElementById('search-overlay');
+            const searchOpenBtns = [document.getElementById('search-open'), document.getElementById('mobile-search-open')].filter(Boolean);
+            const searchCloseBtn = document.getElementById('search-close');
+
+            const toggleSearch = (open) => {
+                if (open) {
+                    searchOverlay.classList.remove('hidden');
+                    setTimeout(() => searchOverlay.classList.remove('opacity-0'), 10);
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    searchOverlay.classList.add('opacity-0');
+                    searchOverlay.addEventListener('transitionend', () => {
+                        searchOverlay.classList.add('hidden');
+                        document.body.style.overflow = '';
+                    }, { once: true });
+                }
+            };
+
+            searchOpenBtns.forEach(btn => btn.addEventListener('click', () => toggleSearch(true)));
+            if (searchCloseBtn) searchCloseBtn.addEventListener('click', () => toggleSearch(false));
+            if (searchOverlay) searchOverlay.addEventListener('click', (e) => {
+                if (e.target === searchOverlay) toggleSearch(false);
+            });
+
+            // --- 4. Mobile Menu Bottom Sheet Drawer ---
+            const menuDrawer = document.getElementById('mobile-menu-drawer');
+            const menuBackdrop = document.getElementById('drawer-backdrop');
+            const menuContent = document.getElementById('drawer-content');
+            const menuOpenBtn = document.getElementById('mobile-menu-open');
+            const menuCloseBtn = document.getElementById('mobile-menu-close');
+            const mobileHomesToggle = document.getElementById('mobile-homes-toggle');
+            const mobileHomesMenu = document.getElementById('mobile-homes-menu');
+            const homesIcon = document.getElementById('homes-icon');
+            const HIDDEN_CLASS = 'translate-y-[-100%]';
+
+            const openDrawer = () => {
+                menuDrawer.classList.remove('pointer-events-none');
+                menuContent.classList.remove(HIDDEN_CLASS);
+                menuBackdrop.classList.add('opacity-50', 'pointer-events-auto');
+                document.body.style.overflow = 'hidden';
+            };
+
+            const closeDrawer = () => {
+                menuContent.classList.add(HIDDEN_CLASS);
+                menuBackdrop.classList.remove('opacity-50', 'pointer-events-auto');
+                menuContent.addEventListener('transitionend', () => {
+                    menuDrawer.classList.add('pointer-events-none');
+                    document.body.style.overflow = '';
+                }, { once: true });
+            };
+
+            if (menuOpenBtn) menuOpenBtn.addEventListener('click', openDrawer);
+            if (menuCloseBtn) menuCloseBtn.addEventListener('click', closeDrawer);
+            if (menuBackdrop) menuBackdrop.addEventListener('click', closeDrawer);
+
+            // Mobile Dropdown Toggle - Homes
+            if (mobileHomesToggle) mobileHomesToggle.addEventListener('click', () => {
+                mobileHomesMenu.classList.toggle('hidden');
+                homesIcon.classList.toggle('rotate-180');
+            });
+
+            // --- 5. Global Language Toggle (Globe Icon) ---
+            const langButton = document.getElementById('lang-icon');
+            const mobileLangButton = document.getElementById('mobile-lang-icon');
+
+            const toggleLanguage = () => {
+                const currentLang = localStorage.getItem('language') || 'en';
+                const newLang = currentLang === 'en' ? 'ar' : 'en';
+
+                localStorage.setItem('language', newLang);
+                document.documentElement.setAttribute(
+                    'dir',
+                    newLang === 'ar' ? 'rtl' : 'ltr'
+                );
+            };
+
+            if (langButton) langButton.addEventListener('click', toggleLanguage);
+            if (mobileLangButton) mobileLangButton.addEventListener('click', toggleLanguage);
+
+            const savedLang = localStorage.getItem('language') || 'en';
+            document.documentElement.setAttribute('dir', savedLang === 'ar' ? 'rtl' : 'ltr');
+
+            // --- 6. Contact Form Submission ---
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    // Get form values
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    
+                    // Show success message
+                    alert(`Thank you, ${name}! Your message has been sent. We'll contact you at ${email} within 24 hours.`);
+                    
+                    // Reset form
+                    contactForm.reset();
+                });
+            }
+
+            // --- 7. Animate elements on scroll ---
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fade-in-up');
+                    }
+                });
+            }, observerOptions);
+
+            // Observe elements for animation
+            document.querySelectorAll('.contact-card, .section-heading, .social-icon-wrapper, .image-frame, .contact-image-overlay').forEach(el => {
+                observer.observe(el);
+            });
+
+            // --- 8. Smooth scroll for anchor links ---
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    
+                    if (href !== '#') {
+                        e.preventDefault();
+                        const targetElement = document.querySelector(href);
+                        
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 80,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+
+            // --- 9. Button hover effects ---
+            document.querySelectorAll('.btn-primary, .btn-accent').forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px)';
+                });
+                
+                btn.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
