@@ -285,30 +285,28 @@
             50% { border-radius: 40% 60% 70% 30% / 40% 40% 60% 50%; }
             75% { border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%; }
         }
+/* =========================
+   Typing Text (FINAL FIX)
+========================= */
+.typing-text {
+    display: inline-block;
+    position: relative;
 
-        /* Animated Text */
-        .animated-text {
-            overflow: hidden;
-            position: relative;
-        }
+    line-height: 1.15;       /* MUST match gradient */
+    padding-bottom: 0.1em;  /* cursor + descenders */
+}
 
-        .typing-text {
-            display: inline-block;
-            position: relative;
-        }
-
-        .typing-text::after {
-            content: '';
-            position: absolute;
-            right: -5px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 2px;
-            height: 1.2em;
-            background-color: var(--color-accent);
-            animation: blink 0.8s infinite;
-        }
-
+/* Cursor */
+.typing-text::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    bottom: 0.15em;          /* IMPORTANT: not top */
+    width: 2px;
+    height: 1em;
+    background-color: var(--color-accent);
+    animation: blink 0.8s infinite;
+}
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
@@ -538,14 +536,22 @@
             transform: translateY(0);
         }
 
-        /* Gradient text */
         .gradient-text {
-            background: linear-gradient(90deg, var(--color-primary), var(--color-accent), var(--color-secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: inline-block;
-        }
+    background: linear-gradient(
+        90deg,
+        var(--color-primary),
+        var(--color-accent),
+        var(--color-secondary)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    display: inline-block;
+    line-height: 1.15;        /* fixes g/y/p clipping */
+    padding-bottom: 0.1em;   /* breathing space */
+}
+
 
         /* Section separator */
         .section-separator {

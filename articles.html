@@ -1402,42 +1402,49 @@
                 mobileLangButton.addEventListener('click', toggleLanguage);
             }
 
-            // 5. Improved Dropdown Behavior
-            const dropdownWrappers = document.querySelectorAll('.dropdown-wrapper');
-            let hideTimeout;
-            
-            dropdownWrappers.forEach(wrapper => {
-                const dropdownMenu = wrapper.querySelector('.dropdown-menu');
-                
-                wrapper.addEventListener('mouseenter', () => {
-                    clearTimeout(hideTimeout);
-                    dropdownMenu.style.opacity = '1';
-                    dropdownMenu.style.visibility = 'visible';
-                    dropdownMenu.style.transform = 'translateY(0)';
-                });
-                
-                wrapper.addEventListener('mouseleave', () => {
-                    hideTimeout = setTimeout(() => {
-                        dropdownMenu.style.opacity = '0';
-                        dropdownMenu.style.visibility = 'hidden';
-                        dropdownMenu.style.transform = 'translateY(-10px)';
-                    }, 300);
-                });
-                
-                if (dropdownMenu) {
-                    dropdownMenu.addEventListener('mouseenter', () => {
-                        clearTimeout(hideTimeout);
-                    });
-                    
-                    dropdownMenu.addEventListener('mouseleave', () => {
-                        hideTimeout = setTimeout(() => {
-                            dropdownMenu.style.opacity = '0';
-                            dropdownMenu.style.visibility = 'hidden';
-                            dropdownMenu.style.transform = 'translateY(-10px)';
-                        }, 200);
-                    });
-                }
-            });
+            // 5. Dropdown Behavior (Hover + Click Toggle)
+const dropdownWrappers = document.querySelectorAll('.dropdown-wrapper');
+let hideTimeout;
+
+dropdownWrappers.forEach(wrapper => {
+    const dropdownMenu = wrapper.querySelector('.dropdown-menu');
+    const triggerBtn = wrapper.querySelector('button');
+
+    const openDropdown = () => {
+        dropdownMenu.style.opacity = '1';
+        dropdownMenu.style.visibility = 'visible';
+        dropdownMenu.style.transform = 'translateY(0)';
+        dropdownMenu.dataset.open = 'true';
+    };
+
+    const closeDropdown = () => {
+        dropdownMenu.style.opacity = '0';
+        dropdownMenu.style.visibility = 'hidden';
+        dropdownMenu.style.transform = 'translateY(-10px)';
+        dropdownMenu.dataset.open = 'false';
+    };
+
+    // Hover (desktop only)
+    wrapper.addEventListener('mouseenter', () => {
+        if (!isDesktop()) return;
+        clearTimeout(hideTimeout);
+        openDropdown();
+    });
+
+    wrapper.addEventListener('mouseleave', () => {
+        if (!isDesktop()) return;
+        hideTimeout = setTimeout(closeDropdown, 200);
+    });
+
+    // CLICK TOGGLE (desktop only)
+    triggerBtn.addEventListener('click', (e) => {
+        if (!isDesktop()) return;
+        e.stopPropagation();
+
+        const isOpen = dropdownMenu.dataset.open === 'true';
+        isOpen ? closeDropdown() : openDropdown();
+    });
+});
 
             // 6. Close dropdowns when clicking outside
             document.addEventListener('click', (e) => {
